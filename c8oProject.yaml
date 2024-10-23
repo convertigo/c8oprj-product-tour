@@ -1,6 +1,6 @@
 ↑convertigo: 8.0.0.m006
 ↓lib_ProductTour [core.Project]: 
-  comment: Convertigo NGX builder Project
+  comment: This is the product Tour library for Convertigo projects. use this labrary to include a "product Tour" functionnality to your app. 
   contextTimeout: 59
   corsOrigin: =Origin
   httpSessionTimeout: 60

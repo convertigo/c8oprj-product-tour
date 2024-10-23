@@ -1,3 +1,4 @@
+comment: Setup a product Tour
 ↓InstallIntroJS [ngx.components.UICustomAction-1729613778235]: 
   actionValue: 
     - xmlizable: 
@@ -70,4 +71,5 @@
         - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
         - MobileSmartSourceType: script:params.Steps
 ↓Steps [ngx.components.UIStackVariable-1729614223541]: 
+  comment: Setps holds an array of all the Steps of your product tour
   value: '[{title: ''Welcome product tour'', intro: ''This is a sample step info''}]'

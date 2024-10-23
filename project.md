@@ -1,7 +1,7 @@
 
 # ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/core/images/project_color_16x16.png?raw=true "Project") lib_ProductTour
 
-Convertigo NGX builder Project
+This is the product Tour library for Convertigo projects. use this labrary to include a "product Tour" functionnality to your app. 
 
 <details><summary><span style="color:DarkGoldenRod"><i>Connectors</i></span></summary><blockquote><p>
 
@@ -39,7 +39,7 @@ My First Page as root page
 
 ### ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uiactionstack_color_16x16.png?raw=true "UIActionStack") SetupTour
 
-
+Setup a product Tour
 
 <span style="color:DarkGoldenRod">Variables</span>
 
@@ -57,7 +57,7 @@ comment
 <img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;Steps
 </td>
 <td>
-
+Setps holds an array of all the Steps of your product tour
 </td>
 </tr>
 </table>

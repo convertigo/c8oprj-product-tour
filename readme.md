@@ -3,7 +3,7 @@
 
 # lib_ProductTour
 
-Convertigo NGX builder Project
+This is the product Tour library for Convertigo projects. use this labrary to include a "product Tour" functionnality to your app. 
 
 
 For more technical informations : [documentation](./project.md)
@@ -48,6 +48,8 @@ Describes the mobile application global properties
 
 #### SetupTour
 
+Setup a product Tour
+
 **variables**
 
 <table>
@@ -55,7 +57,7 @@ Describes the mobile application global properties
 <th>name</th><th>comment</th>
 </tr>
 <tr>
-<td>Steps</td><td></td>
+<td>Steps</td><td>Setps holds an array of all the Steps of your product tour</td>
 </tr>
 </table>
 
