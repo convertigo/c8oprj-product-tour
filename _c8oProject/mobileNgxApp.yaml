@@ -64,6 +64,7 @@ componentScriptContent:
         '
 tplProjectName: mobilebuilder_tpl_8_3_0_ngx
 ↓Menu [ngx.components.UIDynamicMenu-1500890597895]: 🗏 mobileMenus/Menu.yaml
+↓SetupTour [ngx.components.UIActionStack-1729613747994]: 🗏 mobileSharedActions/SetupTour.yaml
 ↓Page [ngx.components.PageComponent-1500538678074]: 🗏 mobilePages/Page.yaml
 ↓Style [ngx.components.UIStyle-1491635462437]: 
   comment: You can add some global application styles here
@@ -280,6 +281,7 @@ tplProjectName: mobilebuilder_tpl_8_3_0_ngx
           '
 ↓AutoDarkTheme [ngx.components.UIStyle-1662391887098]: 
   comment: This will define the dark theme for the application. This will be selected if the device is in dark mode. You can disable this to disable automatic dark mode switching
+  isEnabled: false
   styleContent: 
     - xmlizable: 
       - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
@@ -451,3 +453,39 @@ tplProjectName: mobilebuilder_tpl_8_3_0_ngx
           /** Ionic CSS Variables **/
           
           
+↓AppEvent [ngx.components.UIAppEvent-1729702902871]: 
+  appEvent: onAppInit
+  ↓BuildTour [ngx.components.UICustomAction-1729701998800]: 
+    actionValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
+        - com.twinsoft.convertigo.beans.common.FormatedContent: 
+          →: |
+            '		page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
+            		
+            		let Steps = [
+            			{
+            				title: ''My product tour !'',
+            				intro: ''This is a sample step info1''
+            			},
+            			{
+            				title: ''My product tour !'',
+            				element: document.querySelector(''.class1588172846908''),
+            				intro: ''This is a sample step info1''
+            			},
+            			{
+            				title: ''My product tour !'',
+            				element: document.querySelector(''.class1491634376874''),
+            				intro: ''Click on this to get started''
+            			}
+            		]
+            		resolve(Steps);
+            '
+    ↓InvokeSharedAction [ngx.components.UIDynamicInvoke-1729615463057]: 
+      beanData: '{"ionBean":"InvokeAction"}'
+      stack: lib_ProductTour.Application.NgxApp.SetupTour
+      ↓Steps [ngx.components.UIControlVariable-1729701832497]: 
+        varValue: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+            - MobileSmartSourceType: source:{"filter":"Action","project":"lib_ProductTour","input":"","model":{"data":[{"priority":1729701998800,"rootEvent":false,"pageLocals":false},{"priority":1729615454072,"rootEvent":true,"pageLocals":false}],"path":"?.out","prefix":"","suffix":"","custom":"","useCustom":false}}
