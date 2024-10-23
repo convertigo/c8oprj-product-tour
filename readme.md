@@ -3,7 +3,7 @@
 
 # lib_ProductTour
 
-This is the product Tour library for Convertigo projects. use this labrary to include a "product Tour" functionnality to your app. 
+This is the product Tour library for Convertigo projects. use this library to include a "product Tour" functionality to your apps. 
 
 
 For more technical informations : [documentation](./project.md)
