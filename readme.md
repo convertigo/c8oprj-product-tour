@@ -57,7 +57,30 @@ Setup a product Tour
 <th>name</th><th>comment</th>
 </tr>
 <tr>
-<td>Steps</td><td>Setps holds an array of all the Steps of your product tour</td>
+<td>Steps</td><td>Steps holds an array of all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps
+[Intro.js steps](https://introjs.com/docs/tour/examples/json-config)
+
+Here is an example of a Tour steps 
+
+
+```
+[
+  {
+    title: 'Welcome',
+    intro: 'Hello World! 👋'
+  },
+  {
+    element: document.querySelector('.card-demo'),
+    intro: 'This step focuses on an image'
+  },
+  {
+    title: 'Farewell!',
+    element: document.querySelector('.card__image'),
+    intro: 'And this is our final step!'
+  }
+]
+```
+</td>
 </tr>
 </table>
 
