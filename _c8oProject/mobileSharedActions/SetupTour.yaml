@@ -37,11 +37,6 @@ comment: Setup a product Tour
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
             - java.lang.String: 
-              - ↑value: node_modules/intro.js/themes/introjs-dark.css
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
               - ↑value: ../../DisplayObjects/mobile/assets/introjs-custom.css
   package_dependencies: 
     - xmlizable: 
