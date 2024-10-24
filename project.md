@@ -54,10 +54,10 @@ comment
 </tr>
 <tr>
 <td>
-<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;Steps
+<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;StepsPath
 </td>
 <td>
-Steps holds an array of all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps
+Path to a json files  defining all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps.
 [Intro.js steps](https://introjs.com/docs/tour/examples/json-config)
 
 Here is an example of a Tour steps 

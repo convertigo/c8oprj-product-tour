@@ -5,15 +5,31 @@ comment: Setup a product Tour
       - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
       - com.twinsoft.convertigo.beans.common.FormatedContent: 
         →: |
-          '		page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
-          		introJs().setOptions({
-          			showProgress: true,
-          			dontShowAgain: true,
-          			steps: vars.Steps
-          		})
-          		.start();
-          		
-          		resolve();
+          '			page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
+          			
+          			// get the steps from assets/intro.json using a fetch
+          			let Steps = [];
+          			fetch(vars.StepsPath)
+          				.then((response) => {
+          					return response.json();
+          				})
+          				.then((data) => {
+          					// format the steps for introJs by adding the element to the selector
+          					data.forEach((step) => {
+          						step.element = document.querySelector(step.element);
+          					});
+          					Steps = data;
+          					introJs().setOptions({
+          						showProgress: true,
+          						dontShowAgain: true,
+          						steps: Steps
+          					})
+          					.start();
+          					resolve();
+          				})
+          				.catch((error) => {
+          					console.error(''Error:'', error);
+          				});
           '
   build_scripts: 
     - xmlizable: 
@@ -64,10 +80,10 @@ comment: Setup a product Tour
     varValue: 
       - xmlizable: 
         - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-        - MobileSmartSourceType: script:params.Steps
-↓Steps [ngx.components.UIStackVariable-1729614223541]: 
+        - MobileSmartSourceType: script:params.StepsPath
+↓StepsPath [ngx.components.UIStackVariable-1729614223541]: 
   comment: |
-    'Steps holds an array of all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps
+    'Path to a json files  defining all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps.
     [Intro.js steps](https://introjs.com/docs/tour/examples/json-config)
     
     Here is an example of a Tour steps 
@@ -91,4 +107,4 @@ comment: Setup a product Tour
     ]
     ```
     '
-  value: '[{title: ''Welcome product tour'', intro: ''This is a sample step info''}]'
+  value: '''assets/intro.json'''

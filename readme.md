@@ -57,7 +57,7 @@ Setup a product Tour
 <th>name</th><th>comment</th>
 </tr>
 <tr>
-<td>Steps</td><td>Steps holds an array of all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps
+<td>StepsPath</td><td>Path to a json files  defining all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps.
 [Intro.js steps](https://introjs.com/docs/tour/examples/json-config)
 
 Here is an example of a Tour steps 
