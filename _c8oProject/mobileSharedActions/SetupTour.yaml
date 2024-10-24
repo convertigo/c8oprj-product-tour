@@ -19,13 +19,17 @@ comment: Setup a product Tour
           						step.element = document.querySelector(step.element);
           					});
           					Steps = data;
-          					introJs().setOptions({
-          						showProgress: true,
-          						dontShowAgain: true,
-          						steps: Steps
-          					})
-          					.start();
-          					resolve();
+          					// wait 100ms for the page to load before starting the intro
+          					
+          					setTimeout(() => {
+          						introJs().setOptions({
+          							showProgress: true,
+          							dontShowAgain: true,
+          							steps: Steps
+          						})
+          						.start();
+          						resolve();
+          					}, 100);
           				})
           				.catch((error) => {
           					console.error(''Error:'', error);
