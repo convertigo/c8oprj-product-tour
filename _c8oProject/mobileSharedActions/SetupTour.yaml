@@ -8,25 +8,31 @@ comment: Setup a product Tour
           '			page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
           			
           			// get the steps from assets/intro.json using a fetch
-          			let Steps = [];
+          			let options = {
+          				steps: []
+          			}
+          			
           			fetch(vars.StepsPath)
           				.then((response) => {
           					return response.json();
           				})
           				.then((data) => {
-          					// format the steps for introJs by adding the element to the selector
-          					data.forEach((step) => {
-          						step.element = document.querySelector(step.element);
+          					// for eacch key in the data object ecpet the setps key add it to the options object
+          					Object.keys(data).forEach((key) => {
+          						if (key !== ''steps'') {
+          							options[key] = data[key];
+          						}
           					});
-          					Steps = data;
+          					
+          					// format the steps for introJs by adding the element to the selector
+          					data.steps.forEach((step) => {
+          						step.element = document.querySelector(step.element);
+          						options.steps.push(step);
+          					});
           					// wait 100ms for the page to load before starting the intro
           					
           					setTimeout(() => {
-          						introJs().setOptions({
-          							showProgress: true,
-          							dontShowAgain: true,
-          							steps: Steps
-          						})
+          						introJs().setOptions(options)
           						.start();
           						resolve();
           					}, 100);
