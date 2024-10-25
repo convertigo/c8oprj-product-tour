@@ -8,43 +8,45 @@ comment: Setup a product Tour
           '			page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
           
           			let router = page.getInstance(Router) as Router;
-          
-          			router.events
-          				.pipe(filter(event => event instanceof NavigationEnd))
-          				.subscribe((event: NavigationEnd) => {
-          					page.c8o.log.debug(''[ProductTour] ''+ ''Navigated to page: ''+ event.url);
+          			let RunTour = (page, data) => {
+          				let options = {
+          					steps: []
+          				}
+          				
+          				Object.keys(data).forEach((key) => {
+          					if (key !== ''steps'') {
+          						options[key] = data[key];
+          					}
           				});
-          
-          						
-          			// get the steps from assets/intro.json using a fetch
-          			let options = {
-          				steps: []
+          	
+          				// format the steps for introJs by adding the element to the selector
+          				data.steps.forEach((step) => {
+          					// if the element is a string, convert it to a DOM element
+          					if (typeof step.element === ''string'')
+          						step.element = document.querySelector(step.element);
+          					
+          					options.steps.push(step);
+          				});
+          				// wait 100ms for the page to load before starting the intro
+          	
+          				setTimeout(() => {
+          					introJs().setOptions(options).start();
+          					resolve();
+          				}, 100);
           			}
-          			
+          
           			fetch(vars.StepsPath)
           				.then((response) => {
           					return response.json();
           				})
           				.then((data) => {
-          					// for eacch key in the data object ecpet the setps key add it to the options object
-          					Object.keys(data).forEach((key) => {
-          						if (key !== ''steps'') {
-          							options[key] = data[key];
-          						}
-          					});
-          					
-          					// format the steps for introJs by adding the element to the selector
-          					data.steps.forEach((step) => {
-          						step.element = document.querySelector(step.element);
-          						options.steps.push(step);
-          					});
-          					// wait 100ms for the page to load before starting the intro
-          					
-          					setTimeout(() => {
-          						introJs().setOptions(options)
-          						.start();
-          						resolve();
-          					}, 100);
+          					RunTour(page, data); // run the tour on the root page
+          					router.events
+          						.pipe(filter(event => event instanceof NavigationEnd))
+          						.subscribe((event: NavigationEnd) => {
+          							page.c8o.log.debug(''[ProductTour] ''+ ''Navigated to page: ''+ event.url);
+          							RunTour(page, data); // run the tour each time the page changes
+          						});
           				})
           				.catch((error) => {
           					console.error(''Error:'', error);
