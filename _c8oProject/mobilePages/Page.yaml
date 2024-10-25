@@ -54,8 +54,20 @@ title: First page
   beanData: '{"ionBean":"Content"}'
   comment: Page content
   tagName: ion-content
-  ↓UseSharedComponent [ngx.components.UIUseShared-1729588191342]: 
-    sharedcomponent: lib_ProductTour.Application.NgxApp.ProductTour
+  ↓Button [ngx.components.UIDynamicElement-1729873494929]: 
+    beanData: '{"ionBean":"Button"}'
+    tagName: ion-button
+    ↓Label [ngx.components.UIDynamicElement-1729873494924]: 
+      beanData: '{"ionBean":"Label"}'
+      tagName: ion-label
+      ↓Text [ngx.components.UIText-1729873494926]: 
+        textValue: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+            - MobileSmartSourceType: plain:Goto Page 2
+    ↓Event [ngx.components.UIControlEvent-1729873494928]: 
+      ↓PushPage [ngx.components.UIDynamicAction-1729873532423]: 
+        beanData: '{"ionBean":"PushPageAction","page":"plain:lib_ProductTour.Application.NgxApp.Page1"}'
 ↓Footer [ngx.components.UIDynamicElement-1491634242460]: 
   beanData: '{"ionBean":"Footer"}'
   comment: Page footer

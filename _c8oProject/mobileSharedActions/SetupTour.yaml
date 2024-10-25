@@ -6,7 +6,16 @@ comment: Setup a product Tour
       - com.twinsoft.convertigo.beans.common.FormatedContent: 
         →: |
           '			page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
-          			
+          
+          			let router = page.getInstance(Router) as Router;
+          
+          			router.events
+          				.pipe(filter(event => event instanceof NavigationEnd))
+          				.subscribe((event: NavigationEnd) => {
+          					page.c8o.log.debug(''[ProductTour] ''+ ''Navigated to page: ''+ event.url);
+          				});
+          
+          						
           			// get the steps from assets/intro.json using a fetch
           			let options = {
           				steps: []
@@ -83,14 +92,23 @@ comment: Setup a product Tour
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
             - java.lang.String: 
+              - ↑value: Router, NavigationEnd
+            - java.lang.String: 
+              - ↑value: '@angular/router'
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: filter
+            - java.lang.String: 
+              - ↑value: rxjs/operators
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
               - ↑value: '* as introJs'
             - java.lang.String: 
               - ↑value: intro.js/intro.js
-  ↓Steps [ngx.components.UIControlVariable-1729614245393]: 
-    varValue: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-        - MobileSmartSourceType: script:params.StepsPath
 ↓StepsPath [ngx.components.UIStackVariable-1729614223541]: 
   comment: |
     'Path to a json files  defining all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps.
