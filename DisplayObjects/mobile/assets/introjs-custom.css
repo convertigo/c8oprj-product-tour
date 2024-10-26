@@ -22,3 +22,11 @@
 .introjs-button {
 	color: #2f2f2f !important;
 }
+
+.introjs-overlay {
+	pointer-events: none !important;
+}
+
+.introjs-helperLayer {
+	pointer-events: none !important;
+}

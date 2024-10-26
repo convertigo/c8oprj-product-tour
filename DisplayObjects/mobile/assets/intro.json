@@ -4,17 +4,21 @@
 	"steps":[
 		{
 			"title": "My product tour !",
-			"intro": "This is a sample step info1"
+			"class":".class1729873494929",
+			"intro": "This is a sample step info1",
+			"url": "/path-to-xfirst"
 		},
 		{
 			"title": "My product tour !",
-			"element": ".class1588172846908",
-			"intro": "This is a sample step info1"
+			"class": ".class1729873481009",
+			"intro": "This is a sample step info2",
+			"url": "/path-to-page1"
 		},
 		{
 			"title": "My product tour !",
-			"element": ".class1491634376874",
-			"intro": "Click on this to get started"
+			"class": ".class1729873481018",
+			"intro": "This is a sample step info3",
+			"url": "/path-to-page1"
 		}
 	]
 }

@@ -8,7 +8,7 @@ comment: Setup a product Tour
           '			page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
           
           			let router = page.getInstance(Router) as Router;
-          			let RunTour = (page, data) => {
+          			let RunTour = (url, data) => {
           				let options = {
           					steps: []
           				}
@@ -20,17 +20,32 @@ comment: Setup a product Tour
           				});
           	
           				// format the steps for introJs by adding the element to the selector
-          				data.steps.forEach((step) => {
-          					// if the element is a string, convert it to a DOM element
-          					if (typeof step.element === ''string'')
-          						step.element = document.querySelector(step.element);
-          					
-          					options.steps.push(step);
-          				});
-          				// wait 100ms for the page to load before starting the intro
-          	
           				setTimeout(() => {
-          					introJs().setOptions(options).start();
+          					data.steps.forEach((step) => {
+          						// if the element is a string, convert it to a DOM element
+          						if (typeof step.element === ''string'') {
+          							step.element = document.querySelector(step.element);
+          							// Attach a click event to the element to trigger the next step
+          							if (step.element)
+          								step.element.addEventListener(''click'', () => {
+          									introJs().nextStep();
+          								});
+          						}
+          						options.steps.push(step);
+          					});
+          
+          					// find the first step number of the given url
+          					let stepNumber = 1;
+          					for (let i = 0; i < options.steps.length; i++) {
+          						if (options.steps[i].url === url) {
+          							stepNumber = i;
+          							break;
+          						}
+          					}
+          					// start the tour at the first step of the given url					
+          					let tour = introJs().setOptions(options)
+          					tour.goToStep(stepNumber);
+          					tour.start();
           					resolve();
           				}, 100);
           			}
@@ -40,12 +55,12 @@ comment: Setup a product Tour
           					return response.json();
           				})
           				.then((data) => {
-          					RunTour(page, data); // run the tour on the root page
+          					RunTour(router.url, data); // run the tour on the root page
           					router.events
           						.pipe(filter(event => event instanceof NavigationEnd))
           						.subscribe((event: NavigationEnd) => {
           							page.c8o.log.debug(''[ProductTour] ''+ ''Navigated to page: ''+ event.url);
-          							RunTour(page, data); // run the tour each time the page changes
+          							RunTour(event.url, data); // run the tour each time the page changes
           						});
           				})
           				.catch((error) => {
