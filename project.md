@@ -81,7 +81,7 @@ These are very similar to the intro.js documentation [https://introjs.com/docs/t
  * **class** attribute must contain the .classXXXXXXX of a Convertigo DisplayObject 
  * **url** attribute is the Page url where this Item must be activated
  
-The ProductTour Engine will ensure that Items not intended for a given page will not be displayed on other pages.
+The ProductTour Engine will ensure that Items intended for a given page will not be displayed on other pages.
 
 Also the ProductTour will allow user interaction and handle page change. Each time a page changes, the Tour will select the items that can be displayed on this page.
 
