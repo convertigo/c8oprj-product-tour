@@ -48,7 +48,7 @@
     
     
     ## Intro.json file
-    All the tour information  is held in a intro.json file usually held in assets/intro.js. This files holds the Tour Configuration options you can find in intro.js configuration doc : [https://introjs.com/docs/tour/options] and the Tour Steps.
+    All the tour information  is held in a intro.json file usually held in assets/intro.json . This files holds the Tour Configuration options you can find in intro.js configuration doc : [https://introjs.com/docs/tour/options] and the Tour Steps.
     
     These are very similar to the intro.js documentation [https://introjs.com/docs/tour/examples/json-config] but holds a slightly different information. Here is an example of intro.js :
     

@@ -48,7 +48,9 @@ comment: Setup a product Tour
           						tour = introJs()
           						window["__ProductTour"] = tour;
           					}
-          					tour.setOptions(options).start().goToStep(stepNumber+1);
+          					tour.setOptions(options)
+          					tour.start()
+          					tour.goToStep(stepNumber+1);
           					resolve();
           				}, 1000);
           			}
