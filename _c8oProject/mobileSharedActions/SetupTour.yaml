@@ -22,32 +22,35 @@ comment: Setup a product Tour
           				// format the steps for introJs by adding the element to the selector
           				setTimeout(() => {
           					data.steps.forEach((step) => {
-          						// if the element is a string, convert it to a DOM element
-          						if (typeof step.element === ''string'') {
-          							step.element = document.querySelector(step.element);
-          							// Attach a click event to the element to trigger the next step
-          							if (step.element)
-          								step.element.addEventListener(''click'', () => {
-          									introJs().nextStep();
-          								});
-          						}
+          						step.element = document.querySelector(step.class);
+          						// Attach a click event to the element to trigger the next step
+          						//						if (step.element)
+          						//							step.element.addEventListener(''click'', () => {
+          						//								introJs().nextStep();
+          						//							});
+          						if (step.element == null)
+          							page.c8o.log.warn(''[ProductTour] ''+ ''Element not found: ''+ step.class);
+          							
           						options.steps.push(step);
           					});
           
           					// find the first step number of the given url
-          					let stepNumber = 1;
+          					let stepNumber = 0;
           					for (let i = 0; i < options.steps.length; i++) {
           						if (options.steps[i].url === url) {
           							stepNumber = i;
           							break;
           						}
           					}
-          					// start the tour at the first step of the given url					
-          					let tour = introJs().setOptions(options)
-          					tour.goToStep(stepNumber);
-          					tour.start();
+          					
+          					let tour = window["__ProductTour"];
+          					if (tour == null) {
+          						tour = introJs()
+          						window["__ProductTour"] = tour;
+          					}
+          					tour.setOptions(options).start().goToStep(stepNumber+1);
           					resolve();
-          				}, 100);
+          				}, 1000);
           			}
           
           			fetch(vars.StepsPath)
