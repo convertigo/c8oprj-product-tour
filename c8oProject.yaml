@@ -1,6 +1,89 @@
 ↑convertigo: 8.0.0.m006
 ↓lib_ProductTour [core.Project]: 
-  comment: This is the product Tour library for Convertigo projects. use this library to include a "product Tour" functionality to your apps. 
+  comment: |
+    'This is the product Tour library for Convertigo projects. use this library to include a "product Tour" functionality to your apps. 
+    
+    ## Setting up
+    You will have to invoke the SharedAction **SetupTour** in the AppInit Event of your app. This will setup the tour by reading its configuration from a JSON file''s path held in the **StepsPath** SharedVarible.
+    
+    You will also have to add your custom **introjs-custom.css** file in assets to customize the Tour look & feel.
+    
+    Here is an example of introjs-custom.css :
+    
+    ```
+    .introjs-tooltip-header {
+    	color: #2f2f2f;
+    }
+    
+    .introjs-tooltiptext {
+    	color: #2f2f2f;
+    }
+    .introjs-bullets {
+    	color: #2f2f2f;
+    }
+    .introjs-progress {
+    	color: #2f2f2f;
+    }
+    .introjs-arrow {
+    	color: #2f2f2f;
+    }
+    
+    .introjs-tooltipbuttons {
+    	color: #2f2f2f;
+    }
+    
+    .introjs-button {
+    	color: #2f2f2f !important;
+    }
+    
+    .introjs-overlay {
+    	pointer-events: none !important;
+    }
+    
+    .introjs-helperLayer {
+    	pointer-events: none !important;
+    }
+    
+    ```
+    
+    
+    ## Intro.json file
+    All the tour information  is held in a intro.json file usually held in assets/intro.js. This files holds the Tour Configuration options you can find in intro.js configuration doc : [https://introjs.com/docs/tour/options] and the Tour Steps.
+    
+    These are very similar to the intro.js documentation [https://introjs.com/docs/tour/examples/json-config] but holds a slightly different information. Here is an example of intro.js :
+    
+    ```
+    {
+    	"showProgress": true,
+    	"dontShowAgain": true,
+    	"steps":[
+    		{
+    			"title": "My product tour !",
+    			"class":".class1729873494929",
+    			"intro": "This is a sample step info1",
+    			"url": "/path-to-xfirst"
+    		},
+    		{
+    			"title": "My product tour !",
+    			"class": ".class1729873481009",
+    			"intro": "This is a sample step info2",
+    			"url": "/path-to-page1"
+    		},
+    		{
+    			"title": "My product tour !",
+    			"class": ".class1729873481018",
+    			"intro": "This is a sample step info3",
+    			"url": "/path-to-page1"
+    		}
+    	]
+    }
+    ```
+     * **class** attribute must contain the .classXXXXXXX of a Convertigo DisplayObject 
+     * **url** attribute is the Page url where this Item must be activated
+     
+    The ProductTour Engine will ensure that Items not intended for a given page will not be displayed on other pages.
+    
+    Also the ProductTour will allow user interaction and handle page change. Each time a page changes, the Tour will select the items that can be displayed on this page.'
   contextTimeout: 59
   corsOrigin: =Origin
   httpSessionTimeout: 60
