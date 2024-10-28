@@ -38,7 +38,7 @@ comment: Setup a product Tour
           					// find the first step number of the given url
           					let stepNumber = 0;
           					for (let i = 0; i < options.steps.length; i++) {
-          						if (options.steps[i].url === url) {
+          						if (url.startsWith(options.steps[i].url)) {
           							stepNumber = i;
           							break;
           						}
