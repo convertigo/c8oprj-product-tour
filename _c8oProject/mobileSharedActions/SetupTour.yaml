@@ -26,7 +26,10 @@ comment: Setup a product Tour
           							let selector = step.class.split(''::'');
           							if (selector.length > 1) {
           								// we are in the shadowDom case
-          								step.element = document.querySelector(selector[0]).shadowRoot.querySelector(selector[1]);
+          								step.element = document.querySelector(selector[0])
+          								if (step.element != null) {
+          									step.element = step.element.shadowRoot.querySelector(selector[1]);
+          								}
           							} else { 
           								step.element = document.querySelector(step.class);
           							}
