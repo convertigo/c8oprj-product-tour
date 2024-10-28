@@ -22,15 +22,16 @@ comment: Setup a product Tour
           				// format the steps for introJs by adding the element to the selector
           				setTimeout(() => {
           					data.steps.forEach((step) => {
-          						step.element = document.querySelector(step.class);
-          						// Attach a click event to the element to trigger the next step
-          						//						if (step.element)
-          						//							step.element.addEventListener(''click'', () => {
-          						//								introJs().nextStep();
-          						//							});
-          						if (step.element == null)
-          							page.c8o.log.warn(''[ProductTour] ''+ ''Element not found: ''+ step.class);
-          							
+          						if (step.class != null &&  step.class != "") { 
+          							step.element = document.querySelector(step.class);
+          							// Attach a click event to the element to trigger the next step
+          							//						if (step.element)
+          							//							step.element.addEventListener(''click'', () => {
+          							//								introJs().nextStep();
+          							//							});
+          							if (step.element == null)
+          								page.c8o.log.warn(''[ProductTour] ''+ ''Element not found: ''+ step.class);
+          						}
           						options.steps.push(step);
           					});
           
