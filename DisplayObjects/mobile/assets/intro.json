@@ -4,9 +4,15 @@
 	"steps":[
 		{
 			"title": "My product tour !",
+			"intro": "Welcome to the tour !",
+			"url": "/path-to-xfirst"
+		},
+		{
+			"title": "My product tour !",
 			"class":".class1729873494929",
 			"intro": "This is a sample step info1",
-			"url": "/path-to-xfirst"
+			"url": "/path-to-xfirst",
+			"hideNext": true
 		},
 		{
 			"title": "My product tour !",

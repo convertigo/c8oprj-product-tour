@@ -39,6 +39,8 @@ comment: Setup a product Tour
           								step.element.addEventListener(''click'', () => {
           									window["__ProductTour"].nextStep();
           								});
+          
+          															
           							if (step.element == null)
           								page.c8o.log.warn(''[ProductTour] ''+ ''Element not found: ''+ step.class);
           						}
@@ -62,6 +64,21 @@ comment: Setup a product Tour
           					tour.setOptions(options)
           					tour.start()
           					tour.goToStep(stepNumber+1);
+          					tour.onchange((targetElement) => {
+          						if (targetElement != null) {
+          							let step = tour._introItems[tour._currentStep];
+          							page.c8o.log.warn(''[ProductTour]  on Step : ''+ JSON.stringify(step));
+          							if (step.hideNext) 
+          								document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''none'';
+          							else 
+          								document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''inline'';
+          
+          							if (step.hidePrevious) 
+          								document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''none'';
+          							else 
+          								document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''inline'';
+          						}
+          					})
           					resolve();
           				}, 1000);
           			}
