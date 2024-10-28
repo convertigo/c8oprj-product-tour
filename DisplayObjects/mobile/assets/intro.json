@@ -12,12 +12,19 @@
 			"title": "My product tour !",
 			"class": ".class1729873481009",
 			"intro": "This is a sample step info2",
-			"url": "/path-to-page1"
+			"url": "/path-to-page1",
+			"autoNext": true
 		},
 		{
 			"title": "My product tour !",
 			"class": ".class1729873481018",
 			"intro": "This is a sample step info3",
+			"url": "/path-to-page1"
+		},
+		{
+			"title": "My product tour !",
+			"intro": "This is a sample step info4",
+			"class": ".class1729873481018",
 			"url": "/path-to-page1"
 		}
 	]

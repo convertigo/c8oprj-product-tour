@@ -37,7 +37,7 @@ comment: Setup a product Tour
           							// Attach a click event to the element to trigger the next step
           							if (step.element != null && step.autoNext)
           								step.element.addEventListener(''click'', () => {
-          									introJs().nextStep();
+          									window["__ProductTour"].nextStep();
           								});
           							if (step.element == null)
           								page.c8o.log.warn(''[ProductTour] ''+ ''Element not found: ''+ step.class);
