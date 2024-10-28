@@ -22,8 +22,15 @@ comment: Setup a product Tour
           				// format the steps for introJs by adding the element to the selector
           				setTimeout(() => {
           					data.steps.forEach((step) => {
-          						if (step.class != null &&  step.class != "") { 
-          							step.element = document.querySelector(step.class);
+          						if (step.class != null &&  step.class != "") {
+          							let selector = step.class.split(''::'');
+          							if (selector.length > 1) {
+          								// we are in the shadowDom case
+          								step.element = document.querySelector(selector[0]).shadowRoot.querySelector(selector[1]);
+          							} else { 
+          								step.element = document.querySelector(step.class);
+          							}
+          							
           							// Attach a click event to the element to trigger the next step
           							//						if (step.element)
           							//							step.element.addEventListener(''click'', () => {
