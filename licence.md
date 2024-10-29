@@ -3,7 +3,7 @@
 *   License does not expire.
 *   Commercial use allowed under the following conditions:
 
-      1 commercial apps, websites, plugins or themes
+      5 commercial apps, websites, plugins or themes
 
 *   Can modify source-code but cannot distribute modifications (derivative works)
 *   Support provided as follows:
@@ -27,7 +27,7 @@
     3.  **Binary Restricted:** Licensee may sublicense Software as a part of a larger work containing more than Software, distributed solely in Object or Binary form under a personal, non-sublicensable, limited license. Such redistribution shall be limited to unlimited codebases.
     4.  **Non Assignable & Non-Transferable:** Licensee may not assign or transfer his rights and duties under this license.
 
-    5.  **Commercial use allowed with restrictions:**   1 commercial apps/websites/plugins/themes
+    5.  **Commercial use allowed with restrictions:**   5 commercial apps/websites/plugins/themes
 
     6.  **Including the Right to Create Derivative Works:** Licensee may create derivative works based on Software, including amending Software’s source code, modifying it, integrating it into a larger work or removing portions of Software, as long as no distribution of the derivative works is made
 
