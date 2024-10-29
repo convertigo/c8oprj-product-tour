@@ -93,6 +93,7 @@ comment: Setup a product Tour
           						let elt = querySelectorAdv(step.class);
           						if (elt) {
           							step.element = elt
+          							step.position = ''right''
           						}
           						page.c8o.log.warn(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
           					})
