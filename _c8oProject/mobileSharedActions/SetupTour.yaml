@@ -122,6 +122,10 @@ comment: Setup a product Tour
           						if (elt) {
           							step.element = elt
           							step.position = ''right''
+          							if (step.element != null && step.autoNext) {
+          								let evt = step.autoNext === true ? ''click'' : step.autoNext;
+          								attachEventForNext(step.element, evt);
+          							}
           						}
           						page.c8o.log.warn(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
           					})
