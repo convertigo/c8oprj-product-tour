@@ -90,7 +90,10 @@ comment: Setup a product Tour
           					
           					tour.onbeforechange((targetElement) => {
           						let step = tour._introItems[tour._currentStep];
-          						//step.element = querySelectorAdv(step.class);
+          						let elt = querySelectorAdv(step.class);
+          						if (elt) {
+          							step.element = elt
+          						}
           						page.c8o.log.warn(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
           					})
           					

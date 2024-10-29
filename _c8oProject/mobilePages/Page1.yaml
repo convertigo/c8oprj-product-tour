@@ -43,18 +43,60 @@ title: Title for Page1
       - xmlizable: 
         - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
         - MobileSmartSourceType: source:{"filter":"Local","project":"lib_ProductTour","input":"","model":{"data":[{"localObject":"local"}],"path":"?.show","prefix":"","suffix":"","custom":"","useCustom":false}}
-    ↓Button [ngx.components.UIDynamicElement-1730183818764]: 
-      beanData: '{"ionBean":"Button"}'
-      tagName: ion-button
-      ↓Label [ngx.components.UIDynamicElement-1730183818759]: 
-        beanData: '{"ionBean":"Label"}'
-        tagName: ion-label
-        ↓Text [ngx.components.UIText-1730183818761]: 
-          textValue: 
-            - xmlizable: 
-              - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-              - MobileSmartSourceType: plain:HELP
-      ↓Event [ngx.components.UIControlEvent-1730183818763]: 
+    ↓CardContainer [ngx.components.UIDynamicElement-1730193709113]: 
+      beanData: '{"ionBean":"Card"}'
+      tagName: ion-card
+      ↓LazyImage [ngx.components.UIDynamicElement-1730193709085]: 
+        beanData: '{"ionBean":"LazyImage","Src":"plain:data:image\/svg+xml;base64,PHN2ZyB3aWR0aD0iMzUwIiBoZWlnaHQ9IjE0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBzdHlsZT0iYmFja2dyb3VuZDojZjZmN2Y5Ij48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGZpbGw9IiNGMDQxNDEiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTptdWx0aXBseSIgZD0iTTYxLjkwNS0zNC4yM2w5Ni4xOTQgNTQuNTEtNjYuOTgyIDU0LjUxMkwyMiAzNC44ODd6Ii8+PGNpcmNsZSBmaWxsPSIjMTBEQzYwIiBzdHlsZT0ibWl4LWJsZW5kLW1vZGU6bXVsdGlwbHkiIGN4PSIxNTUuNSIgY3k9IjEzNS41IiByPSI1Ny41Ii8+PHBhdGggZmlsbD0iIzM4ODBGRiIgc3R5bGU9Im1peC1ibGVuZC1tb2RlOm11bHRpcGx5IiBkPSJNMjA4LjUzOCA5LjUxM2w4NC40MTcgMTUuMzkyTDIyMy45MyA5My45M3oiLz48cGF0aCBmaWxsPSIjRkZDRTAwIiBzdHlsZT0ibWl4LWJsZW5kLW1vZGU6bXVsdGlwbHkiIGQ9Ik0yNjguNjI1IDEwNi41NTdsNDYuMzMyLTI2Ljc1IDQ2LjMzMiAyNi43NXY1My41bC00Ni4zMzIgMjYuNzUtNDYuMzMyLTI2Ljc1eiIvPjxjaXJjbGUgZmlsbD0iIzcwNDRGRiIgc3R5bGU9Im1peC1ibGVuZC1tb2RlOm11bHRpcGx5IiBjeD0iMjk5LjUiIGN5PSI5LjUiIHI9IjM4LjUiLz48cmVjdCBmaWxsPSIjMTFEM0VBIiBzdHlsZT0ibWl4LWJsZW5kLW1vZGU6bXVsdGlwbHkiIHRyYW5zZm9ybT0icm90YXRlKC02MCAxNDguNDcgMzcuODg2KSIgeD0iMTQzLjM3MiIgeT0iLTcuMDU2IiB3aWR0aD0iMTAuMTk2IiBoZWlnaHQ9Ijg5Ljg4NCIgcng9IjUuMDk4Ii8+PHBhdGggZD0iTS0yNS4zODkgNzQuMjUzbDg0Ljg2IDguMTA3YzUuNDk4LjUyNSA5LjUzIDUuNDA3IDkuMDA0IDEwLjkwNWExMCAxMCAwIDAgMS0uMDU3LjQ3N2wtMTIuMzYgODUuNjcxYTEwLjAwMiAxMC4wMDIgMCAwIDEtMTEuNjM0IDguNDJsLTg2LjM1MS0xNS4yMjZjLTUuNDQtLjk1OS05LjA3LTYuMTQ1LTguMTEyLTExLjU4NGwxMy44NTEtNzguNTUxYTEwIDEwIDAgMCAxIDEwLjc5OS04LjIxOXoiIGZpbGw9IiM3MDQ0RkYiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTptdWx0aXBseSIvPjxjaXJjbGUgZmlsbD0iIzBDRDFFOCIgc3R5bGU9Im1peC1ibGVuZC1tb2RlOm11bHRpcGx5IiBjeD0iMjczLjUiIGN5PSIxMDYuNSIgcj0iMjAuNSIvPjwvZz48L3N2Zz4K"}'
+        tagName: ion-img
+      ↓CardHeader [ngx.components.UIDynamicElement-1730193709094]: 
+        beanData: '{"ionBean":"CardHeader"}'
+        tagName: ion-card-header
+        ↓CardTitle [ngx.components.UIDynamicElement-1730193709096]: 
+          beanData: '{"ionBean":"CardTitle"}'
+          tagName: ion-card-title
+          ↓TextItem [ngx.components.UIDynamicElement-1730193709098]: 
+            beanData: '{"ionBean":"TextItem"}'
+            tagName: ion-text
+            ↓Text [ngx.components.UIText-1730193709100]: 
+              textValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: plain:Card Title
+        ↓CardSubTitle [ngx.components.UIDynamicElement-1730193709102]: 
+          beanData: '{"ionBean":"CardSubTitle"}'
+          tagName: ion-card-subtitle
+          ↓TextItem [ngx.components.UIDynamicElement-1730193709104]: 
+            beanData: '{"ionBean":"TextItem"}'
+            tagName: ion-text
+            ↓Text [ngx.components.UIText-1730193709106]: 
+              textValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: plain:Card SubTitle
+      ↓CardContent [ngx.components.UIDynamicElement-1730193709108]: 
+        beanData: '{"ionBean":"CardContent"}'
+        tagName: ion-card-content
+        ↓TextItem [ngx.components.UIDynamicElement-1730193709110]: 
+          beanData: '{"ionBean":"TextItem"}'
+          tagName: ion-text
+          ↓Text [ngx.components.UIText-1730193709112]: 
+            textValue: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                - MobileSmartSourceType: plain:Card Content
+        ↓Button [ngx.components.UIDynamicElement-1730183818764]: 
+          beanData: '{"ionBean":"Button","IconSlot":"plain:end"}'
+          tagName: ion-button
+          ↓Label [ngx.components.UIDynamicElement-1730183818759]: 
+            beanData: '{"ionBean":"Label"}'
+            tagName: ion-label
+            ↓Text [ngx.components.UIText-1730183818761]: 
+              textValue: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+                  - MobileSmartSourceType: plain:HELP
+          ↓Event [ngx.components.UIControlEvent-1730183818763]: 
 ↓Footer [ngx.components.UIDynamicElement-1729873481000]: 
   beanData: '{"ionBean":"Footer"}'
   comment: Page footer
