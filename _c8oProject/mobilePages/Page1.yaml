@@ -37,6 +37,24 @@ title: Title for Page1
   beanData: '{"ionBean":"Content"}'
   comment: Page content
   tagName: ion-content
+  ↓Directive [ngx.components.UIControlDirective-1730183894314]: 
+    directiveName: If
+    directiveSource: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: source:{"filter":"Local","project":"lib_ProductTour","input":"","model":{"data":[{"localObject":"local"}],"path":"?.show","prefix":"","suffix":"","custom":"","useCustom":false}}
+    ↓Button [ngx.components.UIDynamicElement-1730183818764]: 
+      beanData: '{"ionBean":"Button"}'
+      tagName: ion-button
+      ↓Label [ngx.components.UIDynamicElement-1730183818759]: 
+        beanData: '{"ionBean":"Label"}'
+        tagName: ion-label
+        ↓Text [ngx.components.UIText-1730183818761]: 
+          textValue: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+              - MobileSmartSourceType: plain:HELP
+      ↓Event [ngx.components.UIControlEvent-1730183818763]: 
 ↓Footer [ngx.components.UIDynamicElement-1729873481000]: 
   beanData: '{"ionBean":"Footer"}'
   comment: Page footer
@@ -55,6 +73,14 @@ title: Title for Page1
             - xmlizable: 
               - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
               - MobileSmartSourceType: plain:Action 1
+        ↓Event [ngx.components.UIControlEvent-1730183851587]: 
+          ↓SetLocal [ngx.components.UIDynamicAction-1730183872562]: 
+            beanData: |
+              '{
+               "ionBean": "SetLocalAction",
+               "Property": "plain:show",
+               "Value": "script:true"
+              }'
     ↓ButtonSet1 [ngx.components.UIDynamicElement-1729873481015]: 
       beanData: '{"ionBean":"ButtonSet","SetPosition":"plain:end"}'
       tagName: ion-buttons

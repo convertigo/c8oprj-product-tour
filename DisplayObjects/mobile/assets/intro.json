@@ -23,6 +23,13 @@
 		},
 		{
 			"title": "My product tour !",
+			"class": ".class1730183818764",
+			"intro": "Help on Show",
+			"url": "/path-to-page1",
+			"autoNext": true
+		},
+		{
+			"title": "My product tour !",
 			"class": ".class1729873481018",
 			"intro": "This is a sample step info3",
 			"url": "/path-to-page1"
