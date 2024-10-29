@@ -7,6 +7,10 @@ comment: Setup a product Tour
         →: |
           '			page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
           
+          			/**
+          			 * This function is used to query the DOM for an element even if it is in the shadow DOM
+          			 * @param sel the query selector. Syntax is rootdomSelector::shadowdomSelector
+          			 */
           			let querySelectorAdv = (sel) => {
           				let selector = sel.split(''::'')
           				let element
@@ -27,6 +31,15 @@ comment: Setup a product Tour
           			}
           			
           			let router = page.getInstance(Router) as Router;
+          			
+          			/**
+          			 * Runs the product tour on the given url with the given data
+          			 * This function is called each time the page changes to run the tour on the new page
+          			 * Display the steps configured for this page rul.
+          			 * 
+          			 * @param url the url of the page to run the tour on
+          			 * @param data the data containing the steps for the wholetour
+          			 */
           			let RunTour = (url, data) => {
           				let options = {
           					steps: []
@@ -72,6 +85,8 @@ comment: Setup a product Tour
           					tour.setOptions(options)
           					tour.start()
           					tour.goToStep(stepNumber+1);
+          					
+          					// hide the next button if hideNext is set to true, do the same for hidePrevious
           					tour.onchange((targetElement) => {
           						if (targetElement != null) {
           							let step = tour._introItems[tour._currentStep];
@@ -88,6 +103,9 @@ comment: Setup a product Tour
           						}
           					})
           					
+          					
+          					// DOM elements may have appeared after the tour has started, check this befoe each step and 
+          					// update the step element if necessary
           					tour.onbeforechange((targetElement) => {
           						let step = tour._introItems[tour._currentStep];
           						let elt = querySelectorAdv(step.class);
@@ -102,12 +120,16 @@ comment: Setup a product Tour
           				}, 1000);
           			}
           
+          			// Start by ftching the tour steps
           			fetch(vars.StepsPath)
           				.then((response) => {
           					return response.json();
           				})
           				.then((data) => {
+          					// we have now the steps, we can start the tour
           					RunTour(router.url, data); // run the tour on the root page
+          					
+          					// install a listner to run the tour each time the page changes
           					router.events
           						.pipe(filter(event => event instanceof NavigationEnd))
           						.subscribe((event: NavigationEnd) => {
