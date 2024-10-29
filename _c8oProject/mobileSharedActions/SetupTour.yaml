@@ -13,7 +13,7 @@ comment: Setup a product Tour
           			 */
           			let querySelectorAdv = (sel) => {
           				let selector = sel.split(''::'')
-          				let element
+          				let element = null
           				if (selector.length > 1) {
           					// we are in the shadowDom case
           					element = document.querySelector(selector[0])
@@ -21,7 +21,8 @@ comment: Setup a product Tour
           						element = element.shadowRoot.querySelector(selector[1]);
           					}
           				} else { 
-          					element = document.querySelector(sel);
+          					if (sel != "" && sel != null)
+          						element = document.querySelector(sel);
           				}
           				
           				if (element == null)
@@ -29,8 +30,18 @@ comment: Setup a product Tour
           				
           				return element;
           			}
+          
           			
+          			let attachEventForNext = (element, evt) => {
+          				element.addEventListener(evt, () => {
+          					setTimeout(() => {
+          						window["__ProductTour"].nextStep();
+          					}, 1000);
+          				});
+          			}
+          
           			let router = page.getInstance(Router) as Router;
+          			
           			
           			/**
           			 * Runs the product tour on the given url with the given data
@@ -58,12 +69,10 @@ comment: Setup a product Tour
           							step.element = querySelectorAdv(step.class);
           							
           							// Attach a click event to the element to trigger the next step
-          							if (step.element != null && step.autoNext)
-          								step.element.addEventListener(''click'', () => {
-          									setTimeout(() => {
-          										window["__ProductTour"].nextStep();
-          									}, 1000);
-          								});
+          							if (step.element != null && step.autoNext) {
+          								let evt = step.autoNext === true ? ''click'' : step.autoNext;
+          								attachEventForNext(step.element, evt);
+          							}
           						}
           						options.steps.push(step);
           					});
