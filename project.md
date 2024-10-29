@@ -78,12 +78,20 @@ These are very similar to the intro.js documentation [https://introjs.com/docs/t
 	]
 }
 ```
- * **class** attribute must contain the .classXXXXXXX of a Convertigo DisplayObject 
- * **url** attribute is the Page url where this Item must be activated
+## lib_ProductTour additional attributes
+
+The library adds some step attributes to the standard intro.js attributes.
+
+ * **class** 		attribute must contain the .classXXXXXXX of a Convertigo DisplayObject it can also contain a rootSelector::shadowDomSelector if the element is in the shadow dom
+ * **url** 			attribute is the Page url where this Item must be activated
+ * **hideNext** 		attribute true hides the next button on specific step
+ * **hidePrevious** attribute true hides the previous button on specific step
+ * **autoNext** 		attribute true automatically triggers next step when user interacts with the target
  
 The ProductTour Engine will ensure that Items intended for a given page will not be displayed on other pages.
 
-Also the ProductTour will allow user interaction and handle page change. Each time a page changes, the Tour will select the items that can be displayed on this page.
+Also the ProductTour will allow user interaction and handle page change. Each time a page changes, the Tour will select the items that can be displayed on this page. The library also handles dynamically added elements such as modals, alerts and directives.
+
 
 <details><summary><span style="color:DarkGoldenRod"><i>Connectors</i></span></summary><blockquote><p>
 

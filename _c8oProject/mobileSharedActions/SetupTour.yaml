@@ -77,6 +77,7 @@ comment: Setup a product Tour
           						}
           					}
           					
+          					// We have to keep only one instance of the tour object
           					let tour = window["__ProductTour"];
           					if (tour == null) {
           						tour = introJs()
@@ -120,7 +121,7 @@ comment: Setup a product Tour
           				}, 1000);
           			}
           
-          			// Start by ftching the tour steps
+          			// Start by feching the tour steps
           			fetch(vars.StepsPath)
           				.then((response) => {
           					return response.json();
