@@ -31,13 +31,21 @@ comment: Setup a product Tour
           				return element;
           			}
           
-          			
+          			/**
+          			 * This function will triiget a next step after a delay.
+          			 */
+          			let delayedNext = () => {
+          				setTimeout(() => {
+          							window["__ProductTour"].nextStep();
+          				}, 1000);
+          			}
+          
+          			/**
+          			 * This function will attach an event to the element to trigger the next step
+          			 */			
           			let attachEventForNext = (element, evt) => {
-          				element.addEventListener(evt, () => {
-          					setTimeout(() => {
-          						window["__ProductTour"].nextStep();
-          					}, 1000);
-          				});
+          				page.c8o.log.warn(''[ProductTour]  attachEventForNext : ''+ element + '' - ''+ evt);
+          				element.addEventListener(evt, delayedNext);
           			}
           
           			let router = page.getInstance(Router) as Router;
@@ -122,10 +130,13 @@ comment: Setup a product Tour
           						if (elt) {
           							step.element = elt
           							step.position = ''right''
+          							
+          							
           							if (step.element != null && step.autoNext) {
           								let evt = step.autoNext === true ? ''click'' : step.autoNext;
           								attachEventForNext(step.element, evt);
           							}
+          
           						}
           						page.c8o.log.warn(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
           					})
