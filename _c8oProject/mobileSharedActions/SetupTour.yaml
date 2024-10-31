@@ -12,7 +12,7 @@ comment: Setup a product Tour
           			 * @param sel the query selector. Syntax is rootdomSelector::shadowdomSelector
           			 */
           			let querySelectorAdv = (sel) => {
-          				let selector = sel.split(''::'')
+          				let selector = sel ? sel.split(''::'') : []
           				let element = null
           				if (selector.length > 1) {
           					// we are in the shadowDom case
