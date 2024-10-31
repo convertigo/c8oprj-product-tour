@@ -26,7 +26,7 @@ comment: Setup a product Tour
           				}
           				
           				if (element == null)
-          					page.c8o.log.warn(''[ProductTour] ''+ ''Element not found: ''+ sel);
+          					page.c8o.log.debug(''[ProductTour] ''+ ''Element not found: ''+ sel);
           				
           				return element;
           			}
@@ -44,7 +44,7 @@ comment: Setup a product Tour
           			 * This function will attach an event to the element to trigger the next step
           			 */			
           			let attachEventForNext = (element, evt) => {
-          				page.c8o.log.warn(''[ProductTour]  attachEventForNext : ''+ element + '' - ''+ evt);
+          				page.c8o.log.debug(''[ProductTour]  attachEventForNext : ''+ element + '' - ''+ evt);
           				element.addEventListener(evt, delayedNext);
           			}
           
@@ -108,7 +108,7 @@ comment: Setup a product Tour
           					tour.onchange((targetElement) => {
           						if (targetElement != null) {
           							let step = tour._introItems[tour._currentStep];
-          							page.c8o.log.warn(''[ProductTour]  on Step : ''+ JSON.stringify(step));
+          							page.c8o.log.debug(''[ProductTour]  on Step : ''+ JSON.stringify(step));
           							if (step.hideNext) 
           								document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''none'';
           							else 
@@ -138,7 +138,7 @@ comment: Setup a product Tour
           							}
           
           						}
-          						page.c8o.log.warn(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
+          						page.c8o.log.debug(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
           					})
           					
           					resolve();
