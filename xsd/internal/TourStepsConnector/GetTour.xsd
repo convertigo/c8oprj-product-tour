@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lib_ProductTour_ns="http://www.convertigo.com/convertigo/projects/lib_ProductTour" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.convertigo.com/convertigo/projects/lib_ProductTour">
+    <xsd:element name="TourStepsConnector__GetTour" type="lib_ProductTour_ns:TourStepsConnector__GetTourRequestData">
+        <xsd:annotation/>
+    </xsd:element>
+    <xsd:element name="TourStepsConnector__GetTourResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="response" type="lib_ProductTour_ns:TourStepsConnector__GetTourResponseData"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:complexType name="TourStepsConnector__GetTourResponseType">
+        <xsd:sequence>
+            <xsd:element name="document" type="lib_ProductTour_ns:TourStepsConnector__GetTourResponseData"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector__GetTourRequestData">
+        <xsd:sequence/>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_isActiveType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_nextLabelType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_prevLabelType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_skipLabelType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_doneLabelType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_hidePrevType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_hideNextType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_nextToDoneType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_tooltipPositionType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_tooltipClassType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_groupType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_highlightClassType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_exitOnEscType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_exitOnOverlayClickType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_showStepNumbersType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_stepNumbersOfLabelType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_keyboardNavigationType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_showButtonsType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_showBulletsType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_showProgressType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_scrollToElementType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_dontShowAgainType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_disableInteractionType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_steps_object_titleType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_steps_object_introType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_steps_object_urlType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_steps_object_classType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_steps_object_hideNextType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_steps_object_autoNextType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_steps_object_hidePreviousType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_steps_objectType">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="title" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_steps_object_titleType"/>
+            <xsd:element minOccurs="0" name="intro" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_steps_object_introType"/>
+            <xsd:element minOccurs="0" name="url" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_steps_object_urlType"/>
+            <xsd:element minOccurs="0" name="class" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_steps_object_classType"/>
+            <xsd:element minOccurs="0" name="hideNext" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_steps_object_hideNextType"/>
+            <xsd:element minOccurs="0" name="autoNext" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_steps_object_autoNextType"/>
+            <xsd:element minOccurs="0" name="hidePrevious" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_steps_object_hidePreviousType"/>
+        </xsd:sequence>
+        <xsd:attribute default="object" name="type" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_object_stepsType">
+        <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="object" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_steps_objectType"/>
+        </xsd:sequence>
+        <xsd:attribute name="length" type="xsd:byte"/>
+        <xsd:attribute default="array" name="type" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector_GetTour_document_objectType">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="isActive" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_isActiveType"/>
+            <xsd:element minOccurs="0" name="nextLabel" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_nextLabelType"/>
+            <xsd:element minOccurs="0" name="prevLabel" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_prevLabelType"/>
+            <xsd:element minOccurs="0" name="skipLabel" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_skipLabelType"/>
+            <xsd:element minOccurs="0" name="doneLabel" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_doneLabelType"/>
+            <xsd:element minOccurs="0" name="hidePrev" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_hidePrevType"/>
+            <xsd:element minOccurs="0" name="hideNext" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_hideNextType"/>
+            <xsd:element minOccurs="0" name="nextToDone" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_nextToDoneType"/>
+            <xsd:element minOccurs="0" name="tooltipPosition" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_tooltipPositionType"/>
+            <xsd:element minOccurs="0" name="tooltipClass" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_tooltipClassType"/>
+            <xsd:element minOccurs="0" name="group" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_groupType"/>
+            <xsd:element minOccurs="0" name="highlightClass" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_highlightClassType"/>
+            <xsd:element minOccurs="0" name="exitOnEsc" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_exitOnEscType"/>
+            <xsd:element minOccurs="0" name="exitOnOverlayClick" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_exitOnOverlayClickType"/>
+            <xsd:element minOccurs="0" name="showStepNumbers" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_showStepNumbersType"/>
+            <xsd:element minOccurs="0" name="stepNumbersOfLabel" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_stepNumbersOfLabelType"/>
+            <xsd:element minOccurs="0" name="keyboardNavigation" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_keyboardNavigationType"/>
+            <xsd:element minOccurs="0" name="showButtons" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_showButtonsType"/>
+            <xsd:element minOccurs="0" name="showBullets" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_showBulletsType"/>
+            <xsd:element minOccurs="0" name="showProgress" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_showProgressType"/>
+            <xsd:element minOccurs="0" name="scrollToElement" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_scrollToElementType"/>
+            <xsd:element minOccurs="0" name="dontShowAgain" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_dontShowAgainType"/>
+            <xsd:element minOccurs="0" name="disableInteraction" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_disableInteractionType"/>
+            <xsd:element minOccurs="0" name="steps" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_object_stepsType"/>
+        </xsd:sequence>
+        <xsd:attribute default="object" name="type" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="TourStepsConnector__GetTourResponseData">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="object" type="lib_ProductTour_ns:TourStepsConnector_GetTour_document_objectType"/>
+            <xsd:element minOccurs="0" name="error" type="lib_ProductTour_ns:ConvertigoError"/>
+        </xsd:sequence>
+        <xsd:attribute name="connector" type="xsd:string"/>
+        <xsd:attribute name="context" type="xsd:string"/>
+        <xsd:attribute name="contextId" type="xsd:string"/>
+        <xsd:attribute name="fromStub" type="xsd:boolean"/>
+        <xsd:attribute name="fromcache" type="xsd:boolean"/>
+        <xsd:attribute name="generated" type="xsd:string"/>
+        <xsd:attribute name="project" type="xsd:string"/>
+        <xsd:attribute name="sequence" type="xsd:string"/>
+        <xsd:attribute name="signature" type="xsd:long"/>
+        <xsd:attribute name="transaction" type="xsd:string"/>
+        <xsd:attribute name="version" type="xsd:string"/>
+        <xsd:attribute name="screenclass" type="xsd:string"/>
+        <xsd:attribute name="userReference" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="ConvertigoErrorContextVariable">
+        <xsd:attribute name="name" type="xsd:string"/>
+        <xsd:attribute name="value" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="ConvertigoErrorContext">
+        <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="variable" type="lib_ProductTour_ns:ConvertigoErrorContextVariable"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ConvertigoError">
+        <xsd:sequence minOccurs="0">
+            <xsd:element name="code" type="xsd:integer"/>
+            <xsd:element name="message" type="xsd:string"/>
+            <xsd:element name="details" type="xsd:string"/>
+            <xsd:element name="context" type="lib_ProductTour_ns:ConvertigoErrorContext"/>
+            <xsd:element name="exception" type="xsd:string"/>
+            <xsd:element name="stacktrace" type="xsd:string"/>
+        </xsd:sequence>
+        <xsd:attribute name="project" type="xsd:string"/>
+        <xsd:attribute name="connector" type="xsd:string"/>
+        <xsd:attribute name="transaction" type="xsd:string"/>
+        <xsd:attribute name="sequence" type="xsd:string"/>
+        <xsd:attribute name="type">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="c8o"/>
+                    <xsd:enumeration value="project"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+</xsd:schema>

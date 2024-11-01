@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lib_ProductTour_ns="http://www.convertigo.com/convertigo/projects/lib_ProductTour" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.convertigo.com/convertigo/projects/lib_ProductTour">
+    <xsd:element name="Weglot__Translate" type="lib_ProductTour_ns:Weglot__TranslateRequestData">
+        <xsd:annotation/>
+    </xsd:element>
+    <xsd:element name="Weglot__TranslateResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="response" type="lib_ProductTour_ns:Weglot__TranslateResponseData"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:complexType name="Weglot__TranslateResponseType">
+        <xsd:sequence>
+            <xsd:element name="document" type="lib_ProductTour_ns:Weglot__TranslateResponseData"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot__TranslateRequestData">
+        <xsd:sequence>
+            <xsd:element name="api_key" type="xsd:string">
+                <xsd:annotation/>
+            </xsd:element>
+            <xsd:element name="__body" type="xsd:string">
+                <xsd:annotation/>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_l_fromType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_l_toType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_request_urlType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_botType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_previewType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_from_words_valueType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_from_wordsType">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="value" type="lib_ProductTour_ns:Weglot_Translate_document_object_from_words_valueType"/>
+        </xsd:sequence>
+        <xsd:attribute name="length" type="xsd:byte"/>
+        <xsd:attribute default="array" name="type" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_to_words_valueType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_to_wordsType">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="value" type="lib_ProductTour_ns:Weglot_Translate_document_object_to_words_valueType"/>
+        </xsd:sequence>
+        <xsd:attribute name="length" type="xsd:byte"/>
+        <xsd:attribute default="array" name="type" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_ids_valueType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute default="string" name="type" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_object_idsType">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="value" type="lib_ProductTour_ns:Weglot_Translate_document_object_ids_valueType"/>
+        </xsd:sequence>
+        <xsd:attribute name="length" type="xsd:byte"/>
+        <xsd:attribute default="array" name="type" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot_Translate_document_objectType">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="l_from" type="lib_ProductTour_ns:Weglot_Translate_document_object_l_fromType"/>
+            <xsd:element minOccurs="0" name="l_to" type="lib_ProductTour_ns:Weglot_Translate_document_object_l_toType"/>
+            <xsd:element minOccurs="0" name="request_url" type="lib_ProductTour_ns:Weglot_Translate_document_object_request_urlType"/>
+            <xsd:element minOccurs="0" name="bot" type="lib_ProductTour_ns:Weglot_Translate_document_object_botType"/>
+            <xsd:element minOccurs="0" name="preview" type="lib_ProductTour_ns:Weglot_Translate_document_object_previewType"/>
+            <xsd:element minOccurs="0" name="from_words" type="lib_ProductTour_ns:Weglot_Translate_document_object_from_wordsType"/>
+            <xsd:element minOccurs="0" name="to_words" type="lib_ProductTour_ns:Weglot_Translate_document_object_to_wordsType"/>
+            <xsd:element minOccurs="0" name="ids" type="lib_ProductTour_ns:Weglot_Translate_document_object_idsType"/>
+        </xsd:sequence>
+        <xsd:attribute default="object" name="type" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="Weglot__TranslateResponseData">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="object" type="lib_ProductTour_ns:Weglot_Translate_document_objectType"/>
+            <xsd:element minOccurs="0" name="error" type="lib_ProductTour_ns:ConvertigoError"/>
+        </xsd:sequence>
+        <xsd:attribute name="connector" type="xsd:string"/>
+        <xsd:attribute name="context" type="xsd:string"/>
+        <xsd:attribute name="contextId" type="xsd:string"/>
+        <xsd:attribute name="fromStub" type="xsd:boolean"/>
+        <xsd:attribute name="fromcache" type="xsd:boolean"/>
+        <xsd:attribute name="generated" type="xsd:string"/>
+        <xsd:attribute name="project" type="xsd:string"/>
+        <xsd:attribute name="sequence" type="xsd:string"/>
+        <xsd:attribute name="signature" type="xsd:long"/>
+        <xsd:attribute name="transaction" type="xsd:string"/>
+        <xsd:attribute name="version" type="xsd:string"/>
+        <xsd:attribute name="screenclass" type="xsd:string"/>
+        <xsd:attribute name="userReference" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="ConvertigoErrorContextVariable">
+        <xsd:attribute name="name" type="xsd:string"/>
+        <xsd:attribute name="value" type="xsd:string"/>
+    </xsd:complexType>
+    <xsd:complexType name="ConvertigoErrorContext">
+        <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="variable" type="lib_ProductTour_ns:ConvertigoErrorContextVariable"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ConvertigoError">
+        <xsd:sequence minOccurs="0">
+            <xsd:element name="code" type="xsd:integer"/>
+            <xsd:element name="message" type="xsd:string"/>
+            <xsd:element name="details" type="xsd:string"/>
+            <xsd:element name="context" type="lib_ProductTour_ns:ConvertigoErrorContext"/>
+            <xsd:element name="exception" type="xsd:string"/>
+            <xsd:element name="stacktrace" type="xsd:string"/>
+        </xsd:sequence>
+        <xsd:attribute name="project" type="xsd:string"/>
+        <xsd:attribute name="connector" type="xsd:string"/>
+        <xsd:attribute name="transaction" type="xsd:string"/>
+        <xsd:attribute name="sequence" type="xsd:string"/>
+        <xsd:attribute name="type">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="c8o"/>
+                    <xsd:enumeration value="project"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+</xsd:schema>
