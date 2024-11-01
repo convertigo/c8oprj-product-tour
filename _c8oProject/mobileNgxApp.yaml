@@ -459,8 +459,3 @@ tplProjectName: mobilebuilder_tpl_8_3_0_ngx
   ↓InvokeSharedAction [ngx.components.UIDynamicInvoke-1729615463057]: 
     beanData: '{"ionBean":"InvokeAction"}'
     stack: lib_ProductTour.Application.NgxApp.SetupTour
-    ↓StepsPath [ngx.components.UIControlVariable-1729701832497]: 
-      varValue: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-          - MobileSmartSourceType: plain:assets/intro.json

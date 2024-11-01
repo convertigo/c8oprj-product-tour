@@ -1,233 +1,249 @@
 comment: Setup a product Tour
-↓InstallIntroJS [ngx.components.UICustomAction-1729613778235]: 
-  actionValue: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
-      - com.twinsoft.convertigo.beans.common.FormatedContent: 
-        →: |
-          '			page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
-          
-          			/**
-          			 * This function is used to query the DOM for an element even if it is in the shadow DOM
-          			 * @param sel the query selector. Syntax is rootdomSelector::shadowdomSelector
-          			 */
-          			let querySelectorAdv = (sel) => {
-          				let selector = sel ? sel.split(''::'') : []
-          				let element = null
-          				if (selector.length > 1) {
-          					// we are in the shadowDom case
-          					element = document.querySelector(selector[0])
-          					if (element != null) {
-          						element = element.shadowRoot.querySelector(selector[1]);
-          					}
-          				} else { 
-          					if (sel != "" && sel != null)
-          						element = document.querySelector(sel);
-          				}
-          				
-          				if (element == null)
-          					page.c8o.log.debug(''[ProductTour] ''+ ''Element not found: ''+ sel);
-          				
-          				return element;
-          			}
-          
-          			/**
-          			 * This function will triiget a next step after a delay.
-          			 */
-          			let delayedNext = () => {
-          				setTimeout(() => {
-          							window["__ProductTour"].nextStep();
-          				}, 1000);
-          			}
-          
-          			/**
-          			 * This function will attach an event to the element to trigger the next step
-          			 */			
-          			let attachEventForNext = (element, evt) => {
-          				page.c8o.log.debug(''[ProductTour]  attachEventForNext : ''+ element + '' - ''+ evt);
-          				element.addEventListener(evt, delayedNext);
-          			}
-          
-          			let router = page.getInstance(Router) as Router;
-          			
-          			
-          			/**
-          			 * Runs the product tour on the given url with the given data
-          			 * This function is called each time the page changes to run the tour on the new page
-          			 * Display the steps configured for this page rul.
-          			 * 
-          			 * @param url the url of the page to run the tour on
-          			 * @param data the data containing the steps for the wholetour
-          			 */
-          			let RunTour = (url, data) => {
-          				let options = {
-          					steps: []
-          				}
-          				
-          				Object.keys(data).forEach((key) => {
-          					if (key !== ''steps'') {
-          						options[key] = data[key];
-          					}
-          				});
-          	
-          				// format the steps for introJs by adding the element to the selector
-          				setTimeout(() => {
-          					data.steps.forEach((step) => {
-          						if (step.class != null &&  step.class != "") {
-          							step.element = querySelectorAdv(step.class);
-          							
-          							// Attach a click event to the element to trigger the next step
-          							if (step.element != null && step.autoNext) {
-          								let evt = step.autoNext === true ? ''click'' : step.autoNext;
-          								attachEventForNext(step.element, evt);
-          							}
-          						}
-          						options.steps.push(step);
-          					});
-          
-          					// find the first step number of the given url
-          					let stepNumber = 0;
-          					for (let i = 0; i < options.steps.length; i++) {
-          						if (url.startsWith(options.steps[i].url)) {
-          							stepNumber = i;
-          							break;
-          						}
-          					}
-          					
-          					// We have to keep only one instance of the tour object
-          					let tour = window["__ProductTour"];
-          					if (tour == null) {
-          						tour = introJs()
-          						window["__ProductTour"] = tour;
-          					}
-          					tour.setOptions(options)
-          					tour.start()
-          					tour.goToStep(stepNumber+1);
-          					
-          					// hide the next button if hideNext is set to true, do the same for hidePrevious
-          					tour.onchange((targetElement) => {
-          						if (targetElement != null) {
-          							let step = tour._introItems[tour._currentStep];
-          							page.c8o.log.debug(''[ProductTour]  on Step : ''+ JSON.stringify(step));
-          							if (step.hideNext) 
-          								document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''none'';
-          							else 
-          								document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''inline'';
-          
-          							if (step.hidePrevious) 
-          								document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''none'';
-          							else 
-          								document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''inline'';
-          						}
-          					})
-          					
-          					
-          					// DOM elements may have appeared after the tour has started, check this befoe each step and 
-          					// update the step element if necessary
-          					tour.onbeforechange((targetElement) => {
-          						let step = tour._introItems[tour._currentStep];
-          						let elt = querySelectorAdv(step.class);
-          						if (elt) {
-          							step.element = elt
-          							step.position = ''right''
-          							
-          							
-          							if (step.element != null && step.autoNext) {
-          								let evt = step.autoNext === true ? ''click'' : step.autoNext;
-          								attachEventForNext(step.element, evt);
-          							}
-          
-          						}
-          						page.c8o.log.debug(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
-          					})
-          					
-          					resolve();
-          				}, 1000);
-          			}
-          
-          			// Start by feching the tour steps
-          			fetch(vars.StepsPath)
-          				.then((response) => {
-          					return response.json();
-          				})
-          				.then((data) => {
-          					// we have now the steps, we can start the tour
-          					RunTour(router.url, data); // run the tour on the root page
-          					
-          					// install a listner to run the tour each time the page changes
-          					router.events
-          						.pipe(filter(event => event instanceof NavigationEnd))
-          						.subscribe((event: NavigationEnd) => {
-          							page.c8o.log.debug(''[ProductTour] ''+ ''Navigated to page: ''+ event.url);
-          							RunTour(event.url, data); // run the tour each time the page changes
-          						});
-          				})
-          				.catch((error) => {
-          					console.error(''Error:'', error);
-          				});
-          '
-  build_scripts: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: node_modules/intro.js/intro.js
-  build_styles: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: node_modules/intro.js/introjs.css
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: ../../DisplayObjects/mobile/assets/introjs-custom.css
-  package_dependencies: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: intro.js
-            - java.lang.String: 
-              - ↑value: 7.2.0
-  page_ts_imports: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: Router, NavigationEnd
-            - java.lang.String: 
-              - ↑value: '@angular/router'
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: filter
-            - java.lang.String: 
-              - ↑value: rxjs/operators
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '* as introJs'
-            - java.lang.String: 
-              - ↑value: intro.js/intro.js
 ↓StepsPath [ngx.components.UIStackVariable-1729614223541]: 
   comment: |
     Path to a json files  defining all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps.
     
     
-  value: '''assets/intro.json'''
+  value: '''https://raw.githubusercontent.com/convertigo/ProductTours/refs/heads/main/NodeCodeStudio.json'''
+↓CallSequence [ngx.components.UIDynamicAction-1730465380363]: 
+  beanData: '{"ionBean":"CallSequenceAction","requestable":"plain:lib_ProductTour.TranslateTour"}'
+  ↓TourStepsUrl [ngx.components.UIControlVariable-1730465416269]: 
+    comment: new variable
+    varValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: script:params.StepsPath
+  ↓FromLang [ngx.components.UIControlVariable-1730465416271]: 
+    comment: new variable
+    varValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: plain:en
+  ↓ToLang [ngx.components.UIControlVariable-1730465416273]: 
+    comment: new variable
+    varValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: script:(navigator.language || navigator.userLanguage).split('-')[0]
+  ↓InstallIntroJS [ngx.components.UICustomAction-1729613778235]: 
+    actionValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
+        - com.twinsoft.convertigo.beans.common.FormatedContent: 
+          →: |
+            '			page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
+            
+            			/**
+            			 * This function is used to query the DOM for an element even if it is in the shadow DOM
+            			 * @param sel the query selector. Syntax is rootdomSelector::shadowdomSelector
+            			 */
+            			let querySelectorAdv = (sel) => {
+            				let selector = sel ? sel.split(''::'') : []
+            				let element = null
+            				if (selector.length > 1) {
+            					// we are in the shadowDom case
+            					element = document.querySelector(selector[0])
+            					if (element != null) {
+            						element = element.shadowRoot.querySelector(selector[1]);
+            					}
+            				} else { 
+            					if (sel != "" && sel != null)
+            						element = document.querySelector(sel);
+            				}
+            				
+            				if (element == null)
+            					page.c8o.log.debug(''[ProductTour] ''+ ''Element not found: ''+ sel);
+            				
+            				return element;
+            			}
+            
+            			/**
+            			 * This function will triiget a next step after a delay.
+            			 */
+            			let delayedNext = () => {
+            				setTimeout(() => {
+            							window["__ProductTour"].nextStep();
+            				}, 1000);
+            			}
+            
+            			/**
+            			 * This function will attach an event to the element to trigger the next step
+            			 */			
+            			let attachEventForNext = (element, evt) => {
+            				page.c8o.log.debug(''[ProductTour]  attachEventForNext : ''+ element + '' - ''+ evt);
+            				element.addEventListener(evt, delayedNext);
+            			}
+            
+            			let router = page.getInstance(Router) as Router;
+            			
+            			
+            			/**
+            			 * Runs the product tour on the given url with the given data
+            			 * This function is called each time the page changes to run the tour on the new page
+            			 * Display the steps configured for this page rul.
+            			 * 
+            			 * @param url the url of the page to run the tour on
+            			 * @param data the data containing the steps for the wholetour
+            			 */
+            			let RunTour = (url, data) => {
+            				let options = {
+            					steps: []
+            				}
+            				
+            				Object.keys(data).forEach((key) => {
+            					if (key !== ''steps'') {
+            						options[key] = data[key];
+            					}
+            				});
+            	
+            				// format the steps for introJs by adding the element to the selector
+            				setTimeout(() => {
+            					data.steps.forEach((step) => {
+            						if (step.class != null &&  step.class != "") {
+            							step.element = querySelectorAdv(step.class);
+            							
+            							// Attach a click event to the element to trigger the next step
+            							if (step.element != null && step.autoNext) {
+            								let evt = step.autoNext === true ? ''click'' : step.autoNext;
+            								attachEventForNext(step.element, evt);
+            							}
+            						}
+            						options.steps.push(step);
+            					});
+            
+            					// find the first step number of the given url
+            					let stepNumber = 0;
+            					for (let i = 0; i < options.steps.length; i++) {
+            						if (url.startsWith(options.steps[i].url)) {
+            							stepNumber = i;
+            							break;
+            						}
+            					}
+            					
+            					// We have to keep only one instance of the tour object
+            					let tour = window["__ProductTour"];
+            					if (tour == null) {
+            						tour = introJs()
+            						window["__ProductTour"] = tour;
+            					}
+            					tour.setOptions(options)
+            					tour.start()
+            					tour.goToStep(stepNumber+1);
+            					
+            					// hide the next button if hideNext is set to true, do the same for hidePrevious
+            					tour.onchange((targetElement) => {
+            						if (targetElement != null) {
+            							let step = tour._introItems[tour._currentStep];
+            							page.c8o.log.debug(''[ProductTour]  on Step : ''+ JSON.stringify(step));
+            							if (step.hideNext) 
+            								document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''none'';
+            							else 
+            								document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''inline'';
+            
+            							if (step.hidePrevious) 
+            								document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''none'';
+            							else 
+            								document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''inline'';
+            						}
+            					})
+            					
+            					
+            					// DOM elements may have appeared after the tour has started, check this befoe each step and 
+            					// update the step element if necessary
+            					tour.onbeforechange((targetElement) => {
+            						let step = tour._introItems[tour._currentStep];
+            						let elt = querySelectorAdv(step.class);
+            						if (elt) {
+            							step.element = elt
+            							step.position = ''right''
+            							
+            							
+            							if (step.element != null && step.autoNext) {
+            								let evt = step.autoNext === true ? ''click'' : step.autoNext;
+            								attachEventForNext(step.element, evt);
+            							}
+            
+            						}
+            						page.c8o.log.debug(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
+            					})
+            					
+            					resolve();
+            				}, 1000);
+            			}
+            
+            			// we have now the steps, we can start the tour
+            			let data = vars.data;
+            			RunTour(router.url, data); // run the tour on the root page
+            			
+            			// install a listner to run the tour each time the page changes
+            			router.events
+            				.pipe(filter(event => event instanceof NavigationEnd))
+            				.subscribe((event: NavigationEnd) => {
+            					page.c8o.log.debug(''[ProductTour] ''+ ''Navigated to page: ''+ event.url);
+            					RunTour(event.url, data); // run the tour each time the page changes
+            				});
+            '
+    build_scripts: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: node_modules/intro.js/intro.js
+    build_styles: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: node_modules/intro.js/introjs.css
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: ../../DisplayObjects/mobile/assets/introjs-custom.css
+    package_dependencies: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: intro.js
+              - java.lang.String: 
+                - ↑value: 7.2.0
+    page_ts_imports: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: Router, NavigationEnd
+              - java.lang.String: 
+                - ↑value: '@angular/router'
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: filter
+              - java.lang.String: 
+                - ↑value: rxjs/operators
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: '* as introJs'
+              - java.lang.String: 
+                - ↑value: intro.js/intro.js
+    ↓data [ngx.components.UIControlVariable-1730471874570]: 
+      varValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: source:{"filter":"Sequence","project":"lib_ProductTour","input":"","model":{"data":[{"sequence":"lib_ProductTour.TranslateTour","marker":""}],"path":"","prefix":"","suffix":"","custom":"","useCustom":false}}
