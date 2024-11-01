@@ -96,7 +96,9 @@
   corsOrigin: =Origin
   httpSessionTimeout: 60
   version: 1.0
-  ↓void [connectors.SqlConnector]: 🗏 connectors/void.yaml
+  ↓TourStepsConnector [connectors.HttpConnector]: 🗏 connectors/TourStepsConnector.yaml
+  ↓Weglot [connectors.HttpConnector]: 🗏 connectors/Weglot.yaml
+  ↓TranslateTour [sequences.GenericSequence]: 🗏 sequences/TranslateTour.yaml
   ↓Project_reference [references.ProjectSchemaReference]: 
     comment: ngx builder template
     projectName: mobilebuilder_tpl_8_3_0_ngx=https://github.com/convertigo/c8oprj-mobilebuilder-tpl/archive/mobilebuilder_tpl_8_3_0_ngx.zip

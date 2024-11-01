@@ -1,0 +1,24 @@
+↑default: true
+https: true
+port: 443
+server: api.weglot.com
+trustAllServerCertificates: false
+↓Translate [transactions.JsonHttpTransaction]: 
+  ↑default: true
+  httpParameters: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: Content-Type
+            - java.lang.String: 
+              - ↑value: application/json
+  httpVerb: POST
+  subDir: translate?api_key={api_key}
+  ↓api_key [variables.RequestableHttpVariable-1730460462693]: 
+    value: ${lib_producttour.weglot_api_key}
+  ↓__body [variables.RequestableHttpVariable-1730460893560]: 
+    httpMethod: POST

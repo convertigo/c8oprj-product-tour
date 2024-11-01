@@ -1,0 +1,233 @@
+↓inputVars [steps.InputVariablesStep-1730462926057]: 
+↓Call_Transaction1 [steps.TransactionStep-1730462894831]: 
+  connectionStringDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1730462926057
+        - java.lang.String: 
+          - ↑value: ./TourStepsUrl/text()
+  sourceTransaction: lib_ProductTour.TourStepsConnector.GetTour
+↓Copy [steps.XMLCopyStep-1730463731424]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1730462894831
+        - java.lang.String: 
+          - ↑value: ./document/object/*[name() != 'steps']
+↓array [steps.JsonArrayStep-1730463291814]: 
+  key: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: PLAIN
+        - →→: steps
+  ↓Iterator [steps.IteratorStep-1730463138597]: 
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1730462894831
+          - java.lang.String: 
+            - ↑value: ./document/object/steps/object
+    ↓object [steps.JsonObjectStep-1730460997761]: 
+      output: false
+      ↓l_from [steps.JsonFieldStep-1730461005867]: 
+        key: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: PLAIN
+              - →→: l_from
+        output: false
+        value: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: SOURCE
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1730462926057
+                - java.lang.String: 
+                  - ↑value: ./FromLang/text()
+      ↓l_to [steps.JsonFieldStep-1730461016949]: 
+        key: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: PLAIN
+              - →→: l_to
+        output: false
+        value: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: SOURCE
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1730462926057
+                - java.lang.String: 
+                  - ↑value: ./ToLang/text()
+      ↓request_url [steps.JsonFieldStep-1730461030597]: 
+        key: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: PLAIN
+              - →→: request_url
+        output: false
+        value: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: PLAIN
+              - →→: https://trial-nocode.convertigo.net
+      ↓words [steps.JsonArrayStep-1730461054693]: 
+        key: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: PLAIN
+              - →→: words
+        output: false
+        ↓object [steps.JsonObjectStep-1730461087211]: 
+          output: false
+          ↓w [steps.JsonFieldStep-1730461096865]: 
+            key: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                - SmartType: 
+                  - ↑mode: PLAIN
+                  - →→: w
+            output: false
+            value: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                - SmartType: 
+                  - ↑mode: SOURCE
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: 1730463138597
+                    - java.lang.String: 
+                      - ↑value: ./intro/text()
+          ↓t [steps.JsonFieldStep-1730461132398]: 
+            key: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                - SmartType: 
+                  - ↑mode: PLAIN
+                  - →→: t
+            output: false
+            type: number
+            value: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                - SmartType: 
+                  - ↑mode: PLAIN
+                  - →→: 1
+        ↓object1 [steps.JsonObjectStep-1730463193749]: 
+          output: false
+          ↓w [steps.JsonFieldStep-1730463193752]: 
+            key: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                - SmartType: 
+                  - ↑mode: PLAIN
+                  - →→: w
+            output: false
+            value: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                - SmartType: 
+                  - ↑mode: SOURCE
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: 1730463138597
+                    - java.lang.String: 
+                      - ↑value: ./title/text()
+          ↓t [steps.JsonFieldStep-1730463193755]: 
+            key: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                - SmartType: 
+                  - ↑mode: PLAIN
+                  - →→: t
+            output: false
+            type: number
+            value: 
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                - SmartType: 
+                  - ↑mode: PLAIN
+                  - →→: 1
+    ↓Call_Transaction [steps.TransactionStep-1730460948859]: 
+      sourceTransaction: lib_ProductTour.Weglot.Translate
+      ↓__body [variables.StepVariable-1730460948863]: 
+        sourceDefinition: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: 1730460997761
+              - java.lang.String: 
+                - ↑value: ./*
+    ↓object1 [steps.JsonObjectStep-1730463603600]: 
+      key: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: object1
+      ↓field [steps.JsonFieldStep-1730463403649]: 
+        key: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: PLAIN
+              - →→: intro
+        value: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: SOURCE
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1730460948859
+                - java.lang.String: 
+                  - ↑value: ./document/object/to_words/value[1]/text()
+      ↓field1 [steps.JsonFieldStep-1730463438240]: 
+        key: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: PLAIN
+              - →→: title
+        value: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+            - SmartType: 
+              - ↑mode: SOURCE
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1730460948859
+                - java.lang.String: 
+                  - ↑value: ./document/object/to_words/value[2]/text()
+      ↓Copy [steps.XMLCopyStep-1730463801056]: 
+        sourceDefinition: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: 1730463138597
+              - java.lang.String: 
+                - ↑value: ./*[name() != 'intro' and name() != 'title']
+↓TourStepsUrl [variables.RequestableVariable-1730462826991]: 
+  value: https://raw.githubusercontent.com/convertigo/ProductTours/refs/heads/main/NodeCodeStudio.json
+↓FromLang [variables.RequestableVariable-1730463905646]: 
+  value: en
+↓ToLang [variables.RequestableVariable-1730463917611]: 
+  value: es
