@@ -3,6 +3,15 @@
 
 This is the product Tour library for Convertigo projects. use this library to include a "product Tour" functionality to your apps. 
 
+## Symbols
+
+The Tour can optionally be translated using weglot services. If you want to enables this, configure this symbol :
+
+```
+lib_producttour.weglot_api_key=<weglot api key>
+```
+You can find the Weglot api key in the weglot dashboard (https://dashboard.weglot.com)
+
 ## Setting up
 You will have to invoke the SharedAction **SetupTour** in the AppInit Event of your app. This will setup the tour by reading its configuration from a JSON file's path held in the **StepsPath** SharedVarible.
 
