@@ -5,6 +5,15 @@
 
 This is the product Tour library for Convertigo projects. use this library to include a "product Tour" functionality to your apps. 
 
+## Symbols
+
+The Tour can optionally be translated using weglot services. If you want to enables this, configure this symbol :
+
+```
+lib_producttour.weglot_api_key=<weglot api key>
+```
+You can find the Weglot api key in the weglot dashboard (https://dashboard.weglot.com)
+
 ## Setting up
 You will have to invoke the SharedAction **SetupTour** in the AppInit Event of your app. This will setup the tour by reading its configuration from a JSON file's path held in the **StepsPath** SharedVarible.
 
@@ -80,12 +89,20 @@ These are very similar to the intro.js documentation [https://introjs.com/docs/t
 	]
 }
 ```
- * **class** attribute must contain the .classXXXXXXX of a Convertigo DisplayObject 
- * **url** attribute is the Page url where this Item must be activated
+## lib_ProductTour additional attributes
+
+The library adds some step attributes to the standard intro.js attributes.
+
+ * **class** 		attribute must contain the .classXXXXXXX of a Convertigo DisplayObject it can also contain a rootSelector::shadowDomSelector if the element is in the shadow dom
+ * **url** 			attribute is the Page url where this Item must be activated
+ * **hideNext** 		attribute true hides the next button on specific step
+ * **hidePrevious** attribute true hides the previous button on specific step
+ * **autoNext** 		attribute true automatically triggers next step when user interacts with the target
  
 The ProductTour Engine will ensure that Items intended for a given page will not be displayed on other pages.
 
-Also the ProductTour will allow user interaction and handle page change. Each time a page changes, the Tour will select the items that can be displayed on this page.
+Also the ProductTour will allow user interaction and handle page change. Each time a page changes, the Tour will select the items that can be displayed on this page. The library also handles dynamically added elements such as modals, alerts and directives.
+
 
 
 For more technical informations : [documentation](./project.md)

@@ -173,7 +173,7 @@ comment
 
 ## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/sequences/images/genericsequence_color_16x16.png?raw=true "GenericSequence") TranslateTour
 
-
+Translate a Tour for a given Language using Weglot API. If the **lib_producttour.weglot_api_key** is not defined, no translation will occur
 
 <span style="color:DarkGoldenRod">Variables</span>
 
