@@ -155,7 +155,7 @@ comment: Setup a product Tour
             						let elt = querySelectorAdv(step.class);
             						if (elt) {
             							step.element = elt
-            							step.position = ''right''
+            							step.position = step.position ? step.position:''right''
             							
             							
             							if (step.element != null && step.autoNext) {
