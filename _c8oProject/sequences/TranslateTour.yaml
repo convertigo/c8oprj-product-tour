@@ -189,6 +189,11 @@ comment: Translate a Tour for a given Language using Weglot API. If the **lib_pr
           - SmartType: 
             - ↑mode: PLAIN
             - →→: steps
+      ↓Init [steps.SimpleStep-1730724984837]: 
+        expression: |
+          i= 0
+          
+          //todo
       ↓Iterator [steps.IteratorStep-1730463138597]: 
         sourceDefinition: 
           - xmlizable: 
@@ -211,7 +216,7 @@ comment: Translate a Tour for a given Language using Weglot API. If the **lib_pr
                 - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
                 - SmartType: 
                   - ↑mode: JS
-                  - →→: jWeglotTranslation[index]
+                  - →→: jWeglotTranslation[index + i++]
           ↓field1 [steps.JsonFieldStep-1730463438240]: 
             key: 
               - xmlizable: 
@@ -224,7 +229,7 @@ comment: Translate a Tour for a given Language using Weglot API. If the **lib_pr
                 - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
                 - SmartType: 
                   - ↑mode: JS
-                  - →→: jWeglotTranslation[index+1]
+                  - →→: jWeglotTranslation[index +  i++]
           ↓Copy [steps.XMLCopyStep-1730463801056]: 
             sourceDefinition: 
               - xmlizable: 
