@@ -6,7 +6,12 @@ comment: Setup a product Tour
     
   value: '''https://raw.githubusercontent.com/convertigo/ProductTours/refs/heads/main/NodeCodeStudio.json'''
 ↓CallSequence [ngx.components.UIDynamicAction-1730465380363]: 
-  beanData: '{"ionBean":"CallSequenceAction","requestable":"plain:lib_ProductTour.TranslateTour"}'
+  beanData: |
+    '{
+     "ionBean": "CallSequenceAction",
+     "requestable": "plain:lib_ProductTour.TranslateTour",
+     "noLoading": "plain:true"
+    }'
   ↓TourStepsUrl [ngx.components.UIControlVariable-1730465416269]: 
     comment: new variable
     varValue: 
