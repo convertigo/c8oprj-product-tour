@@ -91,6 +91,20 @@ comment: Setup a product Tour
             			 * @param data the data containing the steps for the wholetour
             			 */
             			let RunTour = (url, data) => {
+            				
+            				// We have to keep only one instance of the tour object
+            				let tour = window["__ProductTour"];
+            				if (tour == null) {
+            					tour = introJs()
+            					window["__ProductTour"] = tour;
+            				}
+            
+            				// Tour has been exited, so do not launch it again
+            				if (tour["exited"] == true) {
+            				    page.c8o.log.debug(''[ProductTour]  Tour has been exited'');
+            					return;	
+            				} 
+            				
             				let options = {
             					steps: []
             				}
@@ -125,18 +139,15 @@ comment: Setup a product Tour
             						}
             					}
             					
-            					// We have to keep only one instance of the tour object
-            					let tour = window["__ProductTour"];
-            					if (tour == null) {
-            						tour = introJs()
-            						window["__ProductTour"] = tour;
-            					}
+            					
             					tour.setOptions(options)
             					tour.start()
             					tour.goToStep(stepNumber+1);
             					
             					// hide the next button if hideNext is set to true, do the same for hidePrevious
             					tour.onchange((targetElement) => {
+            						if (tour["exited"] == true) return;
+            						
             						if (targetElement != null) {
             							let step = tour._introItems[tour._currentStep];
             							page.c8o.log.debug(''[ProductTour]  on Step : ''+ JSON.stringify(step));
@@ -153,15 +164,16 @@ comment: Setup a product Tour
             					})
             					
             					
-            					// DOM elements may have appeared after the tour has started, check this befoe each step and 
+            					// DOM elements may have appeared after the tour has started, check this before each step and 
             					// update the step element if necessary
             					tour.onbeforechange((targetElement) => {
+            						if (tour["exited"] == true) return;
+            						
             						let step = tour._introItems[tour._currentStep];
             						let elt = querySelectorAdv(step.class);
             						if (elt) {
             							step.element = elt
             							step.position = ''right''
-            							
             							
             							if (step.element != null && step.autoNext) {
             								let evt = step.autoNext === true ? ''click'' : step.autoNext;
@@ -171,7 +183,13 @@ comment: Setup a product Tour
             						}
             						page.c8o.log.debug(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
             					})
-            					
+            
+            					tour.onexit(() => {
+            						page.c8o.log.debug(''[ProductTour]  Exiting Tour'');
+            						tour["exited"] = true;
+            					})
+            
+            										
             					resolve();
             				}, 1000);
             			}
