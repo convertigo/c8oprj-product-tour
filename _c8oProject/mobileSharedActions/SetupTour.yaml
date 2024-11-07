@@ -66,6 +66,10 @@ comment: Setup a product Tour
             			 * This function will triiget a next step after a delay.
             			 */
             			let delayedNext = () => {
+            				let tour = window["__ProductTour"];
+            				if (tour)
+            					 if (tour["exited"] == true) return;
+            				
             				setTimeout(() => {
             							window["__ProductTour"].nextStep();
             				}, 1000);
