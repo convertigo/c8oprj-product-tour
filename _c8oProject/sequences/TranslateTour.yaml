@@ -13,15 +13,6 @@ comment: Translate a Tour for a given Language using Weglot API. If the **lib_pr
 ↓jIfThenElse [steps.IfThenElseStep-1730472222875]: 
   condition: '''${lib_producttour.weglot_api_key}'' != '''''
   ↓jThen [steps.ThenStep-1730472224275]: 
-    ↓Copy [steps.XMLCopyStep-1730463731424]: 
-      sourceDefinition: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: 1730462894831
-            - java.lang.String: 
-              - ↑value: ./document/object/*[name() != 'steps' and not(contains(name(), 'Label'))]
     ↓object [steps.JsonObjectStep-1730547495482]: 
       output: false
       ↓l_from [steps.JsonFieldStep-1730547495489]: 
@@ -224,7 +215,7 @@ comment: Translate a Tour for a given Language using Weglot API. If the **lib_pr
                 - ↑value: 1730547495482
               - java.lang.String: 
                 - ↑value: ./*
-    ↓jWeglotTranslation [steps.JsonSourceStep-1730547618721]: 
+    ↓IfExistThenElse [steps.IfExistThenElseStep-1737989501963]: 
       sourceDefinition: 
         - xmlizable: 
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
@@ -233,90 +224,119 @@ comment: Translate a Tour for a given Language using Weglot API. If the **lib_pr
               - ↑value: 1730460948859
             - java.lang.String: 
               - ↑value: ./document/object/to_words
-      variableName: jWeglotTranslation
-    ↓Iterator [steps.IteratorStep-1730731863133]: 
-      sourceDefinition: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: 1730462894831
-            - java.lang.String: 
-              - ↑value: ./document/object/*[contains(name(), 'Label')]
-      ↓field [steps.JsonFieldStep-1730732049911]: 
-        key: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
-            - SmartType: 
-              - ↑mode: SOURCE
+      ↓jThen [steps.ThenStep-1737989503678]: 
+        ↓Copy [steps.XMLCopyStep-1730463731424]: 
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
                 - java.lang.String: 
-                  - ↑value: 1730731863133
+                  - ↑value: 1730462894831
                 - java.lang.String: 
-                  - ↑value: name(.)
-        value: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
-            - SmartType: 
-              - ↑mode: JS
-              - →→: jWeglotTranslation[index+nbSteps*2]
-    ↓array [steps.JsonArrayStep-1730463291814]: 
-      key: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
-          - SmartType: 
-            - ↑mode: PLAIN
-            - →→: steps
-      ↓Init [steps.SimpleStep-1730724984837]: 
-        expression: |
-          i= 0
-          
-          //todo
-      ↓Iterator [steps.IteratorStep-1730463138597]: 
-        sourceDefinition: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: 1730462894831
-              - java.lang.String: 
-                - ↑value: ./document/object/steps/object
-        ↓object1 [steps.JsonObjectStep-1730463603600]: 
-          ↓field [steps.JsonFieldStep-1730463403649]: 
+                  - ↑value: ./document/object/*[name() != 'steps' and not(contains(name(), 'Label'))]
+        ↓jWeglotTranslation [steps.JsonSourceStep-1730547618721]: 
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1730460948859
+                - java.lang.String: 
+                  - ↑value: ./document/object/to_words
+          variableName: jWeglotTranslation
+        ↓Iterator [steps.IteratorStep-1730731863133]: 
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1730462894831
+                - java.lang.String: 
+                  - ↑value: ./document/object/*[contains(name(), 'Label')]
+          ↓field [steps.JsonFieldStep-1730732049911]: 
             key: 
               - xmlizable: 
                 - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
                 - SmartType: 
-                  - ↑mode: PLAIN
-                  - →→: intro
+                  - ↑mode: SOURCE
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: 1730731863133
+                    - java.lang.String: 
+                      - ↑value: name(.)
             value: 
               - xmlizable: 
                 - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
                 - SmartType: 
                   - ↑mode: JS
-                  - →→: jWeglotTranslation[i++]
-          ↓field1 [steps.JsonFieldStep-1730463438240]: 
-            key: 
-              - xmlizable: 
-                - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
-                - SmartType: 
-                  - ↑mode: PLAIN
-                  - →→: title
-            value: 
-              - xmlizable: 
-                - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
-                - SmartType: 
-                  - ↑mode: JS
-                  - →→: jWeglotTranslation[i++]
-          ↓Copy [steps.XMLCopyStep-1730463801056]: 
+                  - →→: jWeglotTranslation[index+nbSteps*2]
+        ↓array [steps.JsonArrayStep-1730463291814]: 
+          key: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+              - SmartType: 
+                - ↑mode: PLAIN
+                - →→: steps
+          ↓Init [steps.SimpleStep-1730724984837]: 
+            expression: |
+              i= 0
+              
+              //todo
+          ↓Iterator [steps.IteratorStep-1730463138597]: 
             sourceDefinition: 
               - xmlizable: 
                 - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
                 - com.twinsoft.convertigo.beans.common.XMLVector: 
                   - java.lang.String: 
-                    - ↑value: 1730463138597
+                    - ↑value: 1730462894831
                   - java.lang.String: 
-                    - ↑value: ./*[name() != 'intro' and name() != 'title']
+                    - ↑value: ./document/object/steps/object
+            ↓object1 [steps.JsonObjectStep-1730463603600]: 
+              ↓field [steps.JsonFieldStep-1730463403649]: 
+                key: 
+                  - xmlizable: 
+                    - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                    - SmartType: 
+                      - ↑mode: PLAIN
+                      - →→: intro
+                value: 
+                  - xmlizable: 
+                    - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                    - SmartType: 
+                      - ↑mode: JS
+                      - →→: jWeglotTranslation[i++]
+              ↓field1 [steps.JsonFieldStep-1730463438240]: 
+                key: 
+                  - xmlizable: 
+                    - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                    - SmartType: 
+                      - ↑mode: PLAIN
+                      - →→: title
+                value: 
+                  - xmlizable: 
+                    - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+                    - SmartType: 
+                      - ↑mode: JS
+                      - →→: jWeglotTranslation[i++]
+              ↓Copy [steps.XMLCopyStep-1730463801056]: 
+                sourceDefinition: 
+                  - xmlizable: 
+                    - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                    - com.twinsoft.convertigo.beans.common.XMLVector: 
+                      - java.lang.String: 
+                        - ↑value: 1730463138597
+                      - java.lang.String: 
+                        - ↑value: ./*[name() != 'intro' and name() != 'title']
+      ↓jElse [steps.ElseStep-1737989503680]: 
+        ↓Copy [steps.XMLCopyStep-1737989595436]: 
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1730462894831
+                - java.lang.String: 
+                  - ↑value: ./document/object/*
   ↓jElse [steps.ElseStep-1730472224277]: 
     ↓__todo [steps.LogStep-1730472956462]: 
       expression: '''No lib_producttour.weglot_api_key symbol is configured, defaulting to no translation.'''
@@ -336,3 +356,10 @@ comment: Translate a Tour for a given Language using Weglot API. If the **lib_pr
   value: en
 ↓ToLang [variables.RequestableVariable-1730463917611]: 
   value: fr
+↓Test_Case [core.TestCase]: 
+  ↓TourStepsUrl [variables.TestCaseVariable-1737986695955]: 
+    value: https://raw.githubusercontent.com/convertigo/ProductTours/refs/heads/main/NodeCodeStudio.json
+  ↓FromLang [variables.TestCaseVariable-1737986695957]: 
+    value: en
+  ↓ToLang [variables.TestCaseVariable-1737986695959]: 
+    value: en
