@@ -210,6 +210,31 @@ comment: Setup a product Tour
             					RunTour(event.url, data); // run the tour each time the page changes
             				});
             '
+    app_ts_imports: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: '{Router, NavigationEnd}'
+              - java.lang.String: 
+                - ↑value: '@angular/router'
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: '{filter}'
+              - java.lang.String: 
+                - ↑value: rxjs/operators
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: '* as introJs'
+              - java.lang.String: 
+                - ↑value: intro.js/intro.js
     build_scripts: 
       - xmlizable: 
         - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
@@ -244,31 +269,6 @@ comment: Setup a product Tour
                 - ↑value: intro.js
               - java.lang.String: 
                 - ↑value: 7.2.0
-    page_ts_imports: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-        - com.twinsoft.convertigo.beans.common.XMLVector: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: Router, NavigationEnd
-              - java.lang.String: 
-                - ↑value: '@angular/router'
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: filter
-              - java.lang.String: 
-                - ↑value: rxjs/operators
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: '* as introJs'
-              - java.lang.String: 
-                - ↑value: intro.js/intro.js
     ↓data [ngx.components.UIControlVariable-1730471874570]: 
       varValue: 
         - xmlizable: 
