@@ -37,7 +37,7 @@ comment: Setup a product Tour
         - com.twinsoft.convertigo.beans.common.FormatedContent: 
           →: |
             '			page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
-            
+            			var events = [];
             			/**
             			 * This function is used to query the DOM for an element even if it is in the shadow DOM
             			 * @param sel the query selector. Syntax is rootdomSelector::shadowdomSelector
@@ -80,6 +80,7 @@ comment: Setup a product Tour
             			 */			
             			let attachEventForNext = (element, evt) => {
             				page.c8o.log.debug(''[ProductTour]  attachEventForNext : ''+ element + '' - ''+ evt);
+            				events.push({evt:evt, delayedNext: delayedNext, element: element});
             				element.addEventListener(evt, delayedNext);
             			}
             
@@ -104,7 +105,7 @@ comment: Setup a product Tour
             				}
             
             				// Tour has been exited, so do not launch it again
-            				if (tour["exited"] == true) {
+            				if (!vars.force_start && tour["exited"] == true) {
             				    page.c8o.log.debug(''[ProductTour]  Tour has been exited'');
             					return;	
             				} 
@@ -117,8 +118,12 @@ comment: Setup a product Tour
             					if (key !== ''steps'') {
             						options[key] = data[key];
             					}
+            					
             				});
-            	
+            				if(vars.hide_dontshowagain == true){
+            					options["dontShowAgain"] = false;
+            					delete options["dontShowAgainLabel"]
+            				}
             				// format the steps for introJs by adding the element to the selector
             				setTimeout(() => {
             					data.steps.forEach((step) => {
@@ -131,6 +136,16 @@ comment: Setup a product Tour
             								attachEventForNext(step.element, evt);
             							}
             						}
+            //						if(step.title != null){
+            //							if(typeof step.title != "string"){
+            //								step.title = step.title[page["translate"].currentLang ?? "en"];
+            //							}
+            //						}
+            //						if(step.intro != null){
+            //							if(typeof step.intro != "string"){
+            //								step.intro = step.intro[page["translate"].currentLang ?? "en"];
+            //							}
+            //						}
             						options.steps.push(step);
             					});
             
@@ -154,16 +169,32 @@ comment: Setup a product Tour
             						
             						if (targetElement != null) {
             							let step = tour._introItems[tour._currentStep];
-            							page.c8o.log.debug(''[ProductTour]  on Step : ''+ JSON.stringify(step));
-            							if (step.hideNext) 
-            								document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''none'';
-            							else 
-            								document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''inline'';
-            
-            							if (step.hidePrevious) 
-            								document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''none'';
-            							else 
-            								document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''inline'';
+            							try{
+            								page.c8o.log.debug(''[ProductTour]  on Step : ''+ JSON.stringify(step));
+            							}
+            							catch(e){
+            								page.c8o.log.debug(''[ProductTour]  on Step : ''+ step.title);
+            							}
+            							try{
+            								if (step.hideNext) 
+            									document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''none'';
+            								else 
+            									document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''inline'';
+            							}
+            							catch(e){
+            								// silent catch
+            								//console.error("could''nt hideNext", e);	
+            							}
+            							try{
+            								if (step.hidePrevious) 
+            									document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''none'';
+            								else 
+            									document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''inline'';
+            							}
+            							catch(e){
+            								// silent catch
+            								//console.error("could''nt hidePrevious", e);
+            							}
             						}
             					})
             					
@@ -174,7 +205,7 @@ comment: Setup a product Tour
             						if (tour["exited"] == true) return;
             						
             						let step = tour._introItems[tour._currentStep];
-            						let elt = querySelectorAdv(step.class);
+            						let elt = querySelectorAdv(step?.class);
             						if (elt) {
             							step.element = elt
             							step.position = ''right''
@@ -185,11 +216,20 @@ comment: Setup a product Tour
             							}
             
             						}
-            						page.c8o.log.debug(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
+            						try{
+            							page.c8o.log.debug(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
+            						}
+            						catch(e){
+            							page.c8o.log.debug(''[ProductTour]  onbeforechange : ''+ step.title);
+            						}
+            						
             					})
             
             					tour.onexit(() => {
             						page.c8o.log.debug(''[ProductTour]  Exiting Tour'');
+            						for(let item of events){
+            							item.element.removeEventListener(item.evt, item.delayedNext)
+            						}
             						tour["exited"] = true;
             					})
             
@@ -202,13 +242,16 @@ comment: Setup a product Tour
             			let data = vars.data;
             			RunTour(router.url, data); // run the tour on the root page
             			
-            			// install a listner to run the tour each time the page changes
-            			router.events
-            				.pipe(filter(event => event instanceof NavigationEnd))
-            				.subscribe((event: NavigationEnd) => {
-            					page.c8o.log.debug(''[ProductTour] ''+ ''Navigated to page: ''+ event.url);
-            					RunTour(event.url, data); // run the tour each time the page changes
-            				});
+            			if(vars.restart_on_page_changed){
+            				// install a listner to run the tour each time the page changes
+            				router.events
+            					.pipe(filter(event => event instanceof NavigationEnd))
+            					.subscribe((event: NavigationEnd) => {
+            						page.c8o.log.debug(''[ProductTour] ''+ ''Navigated to page: ''+ event.url);
+            						RunTour(event.url, data); // run the tour each time the page changes
+            					});
+            			}
+            			
             '
     app_ts_imports: 
       - xmlizable: 
@@ -274,3 +317,24 @@ comment: Setup a product Tour
         - xmlizable: 
           - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
           - MobileSmartSourceType: source:{"filter":"Sequence","project":"lib_ProductTour","input":"","model":{"data":[{"sequence":"lib_ProductTour.TranslateTour","marker":""}],"path":"","prefix":"","suffix":"","custom":"","useCustom":false}}
+    ↓force_start [ngx.components.UIControlVariable-1745490716838]: 
+      varValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:params.force_start
+    ↓hide_dontshowagain [ngx.components.UIControlVariable-1745585591134]: 
+      varValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:params.hide_dontshowagain
+    ↓restart_on_page_changed [ngx.components.UIControlVariable-1745587349891]: 
+      varValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: script:params.restart_on_page_changed
+↓force_start [ngx.components.UIStackVariable-1745490704399]: 
+  value: false
+↓hide_dontshowagain [ngx.components.UIStackVariable-1745585543588]: 
+  value: false
+↓restart_on_page_changed [ngx.components.UIStackVariable-1745587318325]: 
+  value: true
