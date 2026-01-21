@@ -126,13 +126,13 @@ For more technical informations : [documentation](./project.md)
      <tr><td>To contribute</td><td>
 
      ```
-     lib_ProductTour=https://github.com/convertigo/c8oprj-product-tour.git:branch=master
+     lib_ProductTour=https://github.com/convertigo/c8oprj-product-tour.git:branch=8.4.0
      ```
      </td></tr>
      <tr><td>To simply use</td><td>
 
      ```
-     lib_ProductTour=https://github.com/convertigo/c8oprj-product-tour/archive/master.zip
+     lib_ProductTour=https://github.com/convertigo/c8oprj-product-tour/archive/8.4.0.zip
      ```
      </td></tr>
     </table>
@@ -154,6 +154,15 @@ Setup a product Tour
 <table>
 <tr>
 <th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>force_start</td><td></td>
+</tr>
+<tr>
+<td>hide_dontshowagain</td><td></td>
+</tr>
+<tr>
+<td>restart_on_page_changed</td><td></td>
 </tr>
 <tr>
 <td>StepsPath</td><td>Path to a json files  defining all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps.

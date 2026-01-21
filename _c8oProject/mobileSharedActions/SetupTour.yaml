@@ -29,7 +29,7 @@ comment: Setup a product Tour
     varValue: 
       - xmlizable: 
         - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-        - MobileSmartSourceType: script:(navigator.language || navigator.userLanguage).split('-')[0]
+        - MobileSmartSourceType: script:(navigator.language || navigator['userLanguage']).split('-')[0]
   ↓InstallIntroJS [ngx.components.UICustomAction-1729613778235]: 
     actionValue: 
       - xmlizable: 

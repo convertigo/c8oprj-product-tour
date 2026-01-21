@@ -104,7 +104,7 @@
   contextTimeout: 59
   corsOrigin: =Origin
   httpSessionTimeout: 60
-  version: 8.4.0.4
+  version: 8.4.0.5
   ↓TourStepsConnector [connectors.HttpConnector]: 🗏 connectors/TourStepsConnector.yaml
   ↓Weglot [connectors.HttpConnector]: 🗏 connectors/Weglot.yaml
   ↓TranslateTour [sequences.GenericSequence]: 🗏 sequences/TranslateTour.yaml
