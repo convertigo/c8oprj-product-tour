@@ -104,12 +104,10 @@
   contextTimeout: 59
   corsOrigin: =Origin
   httpSessionTimeout: 60
-  version: 8.4.0.4
+  version: 8.4.0.4_legacy
   ↓TourStepsConnector [connectors.HttpConnector]: 🗏 connectors/TourStepsConnector.yaml
   ↓Weglot [connectors.HttpConnector]: 🗏 connectors/Weglot.yaml
   ↓TranslateTour [sequences.GenericSequence]: 🗏 sequences/TranslateTour.yaml
-  ↓project [references.ProjectSchemaReference]: 
-    projectName: mobilebuilder_tpl_8_4_0_ngx=https://github.com/convertigo/c8oprj-mobilebuilder-tpl/archive/mobilebuilder_tpl_8_4_0_ngx.zip
   ↓project1 [references.ProjectSchemaReference]: 
     projectName: mobilebuilder_tpl_8_4_0_ngx_legacy=https://github.com/convertigo/c8oprj-mobilebuilder-tpl/archive/mobilebuilder_tpl_8_4_0_ngx_legacy.zip
   ↓Application [core.MobileApplication]: 
