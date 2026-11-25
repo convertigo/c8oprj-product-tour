@@ -1,218 +1,88 @@
 
-# ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/core/images/project_color_16x16.png?raw=true "Project") lib_ProductTour
 
-This is the product Tour library for Convertigo projects. use this library to include a "product Tour" functionality to your apps. 
-
-## Symbols
-
-The Tour can optionally be translated using weglot services. If you want to enables this, configure this symbol :
-
-```
-lib_producttour.weglot_api_key=<weglot api key>
-```
-You can find the Weglot api key in the weglot dashboard (https://dashboard.weglot.com)
+Product tours for Convertigo NGX applications: guided tours that highlight the elements of the screens, follow the actions of the user and the router, and remember the tours each user completed. Built on [driver.js](https://driverjs.com) (MIT).
 
 ## Setting up
-You will have to invoke the SharedAction **SetupTour** in the AppInit Event of your app. This will setup the tour by reading its configuration from a JSON file's path held in the **StepsPath** SharedVarible.
 
-You will also have to add your custom **introjs-custom.css** file in assets to customize the Tour look & feel.
+Invoke the shared action **SetupTour** in the onAppInit event of the application. The first call installs the tour engine and reads the tours from a JSON file of the application; later calls only start tours (from a help menu for instance).
 
-Here is an example of introjs-custom.css :
+Variables of **SetupTour**:
 
-```
-.introjs-tooltip-header {
-	color: #2f2f2f;
-}
+* **tours**: path of the tours file, relative to the application (default `assets/tours/tours.json`; no scheme, no host, no "..").
+* **tour_id**: tour to start: its id, `@current` for the tour of the current screen, empty to only set up the engine.
+* **force_start**: `true` starts the tour even if the user already completed or skipped it (help menu); `false` starts it only if the user never saw it (first run).
+* **conditions**: object of the conditions the `when` of tours and steps name, each a boolean or a function returning a boolean, for instance `{ admin: () => this.global.isAdmin }`.
+* **user_key**: key of the user the tours are remembered for, a string or a function (default: the name of the session user).
 
-.introjs-tooltiptext {
-	color: #2f2f2f;
-}
-.introjs-bullets {
-	color: #2f2f2f;
-}
-.introjs-progress {
-	color: #2f2f2f;
-}
-.introjs-arrow {
-	color: #2f2f2f;
-}
+Mark each element a step points at with a `data-tour` attribute (an Attribute component named `data-tour` with a plain value such as `create-app`).
 
-.introjs-tooltipbuttons {
-	color: #2f2f2f;
-}
+The engine is also available as `window.__C8oProductTour`, for menus and help buttons: `start(id, { auto })`, `stop(how)`, `list()`, `tourFor(url)`, `hasNew(url)`, `isSeen(id)`, `isActive()`, `reset(id)`, `subscribe(listener)`.
 
-.introjs-button {
-	color: #2f2f2f !important;
-}
-
-.introjs-overlay {
-	pointer-events: none !important;
-}
-
-.introjs-helperLayer {
-	pointer-events: none !important;
-}
-
-```
-
-
-## Intro.json file
-All the tour information  is held in a intro.json file usually held in assets/intro.json . This files holds the Tour Configuration options you can find in intro.js configuration doc : [https://introjs.com/docs/tour/options] and the Tour Steps.
-
-These are very similar to the intro.js documentation [https://introjs.com/docs/tour/examples/json-config] but holds a slightly different information. Here is an example of intro.js :
+## Tours file
 
 ```
 {
-	"showProgress": true,
-	"dontShowAgain": true,
-	"steps":[
+	"labels": { "next": "tour_next", "previous": "tour_previous", "done": "tour_done", "skip": "tour_skip" },
+	"tours": [
 		{
-			"title": "My product tour !",
-			"class":".class1729873494929",
-			"intro": "This is a sample step info1",
-			"url": "/path-to-xfirst"
-		},
-		{
-			"title": "My product tour !",
-			"class": ".class1729873481009",
-			"intro": "This is a sample step info2",
-			"url": "/path-to-page1"
-		},
-		{
-			"title": "My product tour !",
-			"class": ".class1729873481018",
-			"intro": "This is a sample step info3",
-			"url": "/path-to-page1"
+			"id": "demo",
+			"version": 1,
+			"title": "demo_tour_title",
+			"description": "demo_tour_description",
+			"routes": ["^/path-to-xfirst"],
+			"steps": [
+				{ "id": "welcome", "intro": true, "route": "^/path-to-xfirst", "title": "Welcome", "text": "A short tour.", "nextLabel": "Start", "skipLabel": "Later" },
+				{ "id": "goto", "anchor": "demo-goto", "route": "^/path-to-xfirst", "title": "Go on", "text": "Click this button.", "advanceOn": { "route": "^/path-to-page1" } },
+				{ "id": "end", "route": "^/path-to-page1", "title": "Done", "text": "That is all." }
+			]
 		}
 	]
 }
 ```
-## lib_ProductTour additional attributes
 
-The library adds some step attributes to the standard intro.js attributes.
+Texts (titles, texts, labels) are i18n keys translated with the ngx-translate service of the application, or plain texts. They are shown as text: HTML is escaped, line breaks are kept.
 
- * **class** 		attribute must contain the .classXXXXXXX of a Convertigo DisplayObject it can also contain a rootSelector::shadowDomSelector if the element is in the shadow dom
- * **url** 			attribute is the Page url where this Item must be activated
- * **hideNext** 		attribute true hides the next button on specific step
- * **hidePrevious** attribute true hides the previous button on specific step
- * **autoNext** 		attribute true automatically triggers next step when user interacts with the target
- 
-The ProductTour Engine will ensure that Items intended for a given page will not be displayed on other pages.
+Tour attributes:
 
-Also the ProductTour will allow user interaction and handle page change. Each time a page changes, the Tour will select the items that can be displayed on this page. The library also handles dynamically added elements such as modals, alerts and directives.
+* **id**, **title**, **description**.
+* **version**: a higher version makes the tour new again for the users who completed it.
+* **routes**: regular expressions of the screens the tour belongs to ("tour of this screen" of a help menu, `@current`).
+* **when**: conditions of the tour.
+* **startHint**: text shown when the tour is asked for on another screen than its first step; the tour starts when the user reaches that screen.
+* **steps**.
 
+Step attributes:
 
-<details><summary><span style="color:DarkGoldenRod"><i>Connectors</i></span></summary><blockquote><p>
+* **id**: unique in the tour.
+* **route**: regular expression (or list) the router URL must match; on another screen the tour pauses, and goes on when the user comes back.
+* **anchor**: `data-tour` value (or list of values by preference: the first one with a visible element wins) of the element to highlight; without anchor the step is centered. A step whose anchor is absent is skipped: a tour never points at something missing.
+* **when**: condition names (`!name` negates one); the step is skipped when one does not hold.
+* **advanceOn**: the step waits for the user instead of showing a Next button: `{ "route": regexp }` (a navigation), `{ "appear": anchor }` (an element appears) or `{ "more": anchor }` (one more element than when the step showed, for instance a component added to a page). The highlighted element can be clicked; once it is, the overlay goes so that the dialogs it opens can be used, and a hint at the bottom of the screen says the tour goes on. `"click": false` keeps the element not clickable. When the condition already holds, the step is passed.
+* **waitText**: text of the hint of an action step.
+* **allowNext**: an action step keeps its Next button (the user may also just read it).
+* **interactive**: the highlighted element of an ordinary step can be clicked.
+* **side**, **align**: placement of the popover (`top`, `right`, `bottom`, `left`; `start`, `center`, `end`).
+* **intro**: first card of a tour: the title of the tour and its number of steps instead of the progress bar.
+* **nextLabel**, **skipLabel**: other texts for the Next button and the skip link.
+* **alternatives**: buttons that jump to another step: `[{ "label": "...", "goTo": "step-id", "anchor": "shown-only-if-this-anchor-exists" }]`.
+* **branch**: the step is reached only through an alternative and is not counted in the progress.
+* **noBack**: no Back button.
+* **wait**: milliseconds to wait for the anchor (default 3 s, 10 s after a navigation).
 
+The `labels` map gives the i18n keys of the texts of the engine: next, previous, done, skip, close, progress (`{{current}}`, `{{total}}`), steps (`{{total}}`), skipStep, quit, waiting, pending.
 
-<details><summary><b>TourStepsConnector</b></summary><blockquote><p>
+## Look
 
+The popover has the classes of driver.js plus `c8o-tour`. CSS variables: `--c8o-tour-primary` (default #326DF7) and `--c8o-tour-font`. Below 768 px wide the popover is shown at the bottom of the screen. The overlay and the popover show at once, without the fade-in of driver.js (8.4.0.8: in Firefox the fade could leave them invisible while the tour already blocked the page).
 
-## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/connectors/images/httpconnector_color_16x16.png?raw=true "HttpConnector") TourStepsConnector
+## Remembering
 
+The completed or skipped tours are kept in localStorage (`c8o.productTour:<user>`), the tour in progress in sessionStorage so that it goes on after a reload.
 
+## From 8.4.0.6
 
-<details><summary><span style="color:DarkGoldenRod"><i>Transactions</i></span></summary><blockquote><p>
+8.4.0.7 replaces intro.js (AGPL) by driver.js (MIT) and reads the tours from the application instead of a remote URL: TranslateTour, TourStepsConnector and the Weglot translation are removed (use the i18n files of the application), `class`/`url`/`autoNext` become `anchor`/`route`/`advanceOn`, and the stylesheet `introjs-custom.css` is no longer used.
 
-
-### ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/transactions/images/jsonhttptransaction_color_16x16.png?raw=true "JsonHttpTransaction") GetTour
-
-
-</p></blockquote></details>
-</p></blockquote></details>
-
-<details><summary><b>Weglot</b></summary><blockquote><p>
-
-
-## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/connectors/images/httpconnector_color_16x16.png?raw=true "HttpConnector") Weglot
-
-
-
-<details><summary><span style="color:DarkGoldenRod"><i>Transactions</i></span></summary><blockquote><p>
-
-
-### ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/transactions/images/jsonhttptransaction_color_16x16.png?raw=true "JsonHttpTransaction") Translate
-
-
-
-<span style="color:DarkGoldenRod">Variables</span>
-
-<table>
-<tr>
-<th>
-name
-</th>
-<th>
-comment
-</th>
-</tr>
-<tr>
-<td>
-<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableHttpVariable" >&nbsp;__body
-</td>
-<td>
-
-</td>
-</tr>
-<tr>
-<td>
-<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableHttpVariable" >&nbsp;api_key
-</td>
-<td>
-
-</td>
-</tr>
-</table>
-
-</p></blockquote></details>
-</p></blockquote></details>
-</p></blockquote></details>
-
-<details><summary><span style="color:DarkGoldenRod"><i>Sequences</i></span></summary><blockquote><p>
-
-
-## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/sequences/images/genericsequence_color_16x16.png?raw=true "GenericSequence") TranslateTour
-
-Translate a Tour for a given Language using Weglot API. If the **lib_producttour.weglot_api_key** is not defined, no translation will occur
-
-<span style="color:DarkGoldenRod">Variables</span>
-
-<table>
-<tr>
-<th>
-name
-</th>
-<th>
-comment
-</th>
-</tr>
-<tr>
-<td>
-<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableVariable" >&nbsp;FromLang
-</td>
-<td>
-
-</td>
-</tr>
-<tr>
-<td>
-<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableVariable" >&nbsp;ToLang
-</td>
-<td>
-
-</td>
-</tr>
-<tr>
-<td>
-<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableVariable" >&nbsp;TourStepsUrl
-</td>
-<td>
-
-</td>
-</tr>
-</table>
-
-</p></blockquote></details>
 
 <details><summary><span style="color:DarkGoldenRod"><i>Mobile Application</i></span></summary><blockquote><p>
 
@@ -246,7 +116,9 @@ My First Page as root page
 
 ### ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uiactionstack_color_16x16.png?raw=true "UIActionStack") SetupTour
 
-Setup a product Tour
+Sets up the product tour of the application and, optionally, starts a tour.
+
+The tours are read from a JSON file of the application (variable "tours"), see the readme of lib_ProductTour.<br/>The first call installs the tour engine once (window.__C8oProductTour); later calls only start tours.
 
 <span style="color:DarkGoldenRod">Variables</span>
 
@@ -261,10 +133,18 @@ comment
 </tr>
 <tr>
 <td>
+<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;conditions
+</td>
+<td>
+Object of the conditions the "when" of tours and steps name: booleans or functions returning a boolean.<br/>Only the first non-null value is kept.
+</td>
+</tr>
+<tr>
+<td>
 <img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;force_start
 </td>
 <td>
-
+true starts the tour even if the user has already completed or skipped it; false starts it only once.
 </td>
 </tr>
 <tr>
@@ -272,7 +152,7 @@ comment
 <img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;hide_dontshowagain
 </td>
 <td>
-
+Not used since 8.4.0.7 (kept for the applications that still set it).
 </td>
 </tr>
 <tr>
@@ -280,17 +160,31 @@ comment
 <img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;restart_on_page_changed
 </td>
 <td>
-
+Not used since 8.4.0.7: the engine always follows the router (kept for the applications that still set it).
 </td>
 </tr>
 <tr>
 <td>
-<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;StepsPath
+<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;tour_id
 </td>
 <td>
-Path to a json files  defining all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps.
-
-
+Id of the tour to start, "@current" for the tour of the current screen, empty to only set up the engine.
+</td>
+</tr>
+<tr>
+<td>
+<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;tours
+</td>
+<td>
+Path of the tours file of the application: a relative path to a JSON file of its assets.
+</td>
+</tr>
+<tr>
+<td>
+<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/ngx/components/images/uistackvariable_16x16.png?raw=true "  alt="UIStackVariable" >&nbsp;user_key
+</td>
+<td>
+Key of the user the completed tours are remembered for (string or function); by default the name of the session user.
 </td>
 </tr>
 </table>

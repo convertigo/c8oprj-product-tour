@@ -57,6 +57,12 @@ title: First page
   ↓Button [ngx.components.UIDynamicElement-1729873494929]: 
     beanData: '{"ionBean":"Button"}'
     tagName: ion-button
+    ↓DataTour [ngx.components.UIAttribute-1793290000032]: 
+      attrName: data-tour
+      attrValue: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+          - MobileSmartSourceType: plain:demo-goto
     ↓Label [ngx.components.UIDynamicElement-1729873494924]: 
       beanData: '{"ionBean":"Label"}'
       tagName: ion-label

@@ -1,0 +1,37 @@
+{
+	"tours": [
+		{
+			"id": "demo",
+			"version": 1,
+			"title": "Demo tour",
+			"description": "Shows the two pages of this demo application.",
+			"routes": ["^/path-to-xfirst"],
+			"steps": [
+				{
+					"id": "welcome",
+					"intro": true,
+					"route": "^/path-to-xfirst",
+					"title": "Welcome to the product tour",
+					"text": "This demo tour shows how a tour follows the actions of the user.",
+					"nextLabel": "Start",
+					"skipLabel": "Later"
+				},
+				{
+					"id": "goto",
+					"anchor": "demo-goto",
+					"route": "^/path-to-xfirst",
+					"title": "Open the second page",
+					"text": "Click this button: the tour goes on on the next page.",
+					"advanceOn": { "route": "^/path-to-page1" },
+					"waitText": "The tour goes on when the second page opens."
+				},
+				{
+					"id": "end",
+					"route": "^/path-to-page1",
+					"title": "That is all",
+					"text": "Steps are defined in assets/tours/tours.json and point at elements with a data-tour attribute."
+				}
+			]
+		}
+	]
+}

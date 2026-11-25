@@ -1,340 +1,1080 @@
-comment: Setup a product Tour
-↓StepsPath [ngx.components.UIStackVariable-1729614223541]: 
+comment: |
+  Sets up the product tour of the application and, optionally, starts a tour.
+  
+  The tours are read from a JSON file of the application (variable "tours"), see the readme of lib_ProductTour.
+  The first call installs the tour engine once (window.__C8oProductTour); later calls only start tours.
+↓tours [ngx.components.UIStackVariable-1793290000001]: 
   comment: |
-    Path to a json files  defining all the Steps of your product tour. Please see intro.js configuration for more information about setting up the steps.
-    
-    
-  value: '''https://raw.githubusercontent.com/convertigo/ProductTours/refs/heads/main/NodeCodeStudio.json'''
-↓CallSequence [ngx.components.UIDynamicAction-1730465380363]: 
-  beanData: |
-    '{
-     "ionBean": "CallSequenceAction",
-     "requestable": "plain:lib_ProductTour.TranslateTour",
-     "noLoading": "plain:true"
-    }'
-  ↓TourStepsUrl [ngx.components.UIControlVariable-1730465416269]: 
-    comment: new variable
-    varValue: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-        - MobileSmartSourceType: script:params.StepsPath
-  ↓FromLang [ngx.components.UIControlVariable-1730465416271]: 
-    comment: new variable
-    varValue: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-        - MobileSmartSourceType: plain:en
-  ↓ToLang [ngx.components.UIControlVariable-1730465416273]: 
-    comment: new variable
-    varValue: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-        - MobileSmartSourceType: script:(navigator.language || navigator['userLanguage']).split('-')[0]
-  ↓InstallIntroJS [ngx.components.UICustomAction-1729613778235]: 
-    actionValue: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
-        - com.twinsoft.convertigo.beans.common.FormatedContent: 
-          →: |
-            '			page.c8o.log.debug(''[MB] ''+ props.actionFunction +'': ''+ props.actionName);
-            			var events = [];
-            			/**
-            			 * This function is used to query the DOM for an element even if it is in the shadow DOM
-            			 * @param sel the query selector. Syntax is rootdomSelector::shadowdomSelector
-            			 */
-            			let querySelectorAdv = (sel) => {
-            				let selector = sel ? sel.split(''::'') : []
-            				let element = null
-            				if (selector.length > 1) {
-            					// we are in the shadowDom case
-            					element = document.querySelector(selector[0])
-            					if (element != null) {
-            						element = element.shadowRoot.querySelector(selector[1]);
-            					}
-            				} else { 
-            					if (sel != "" && sel != null)
-            						element = document.querySelector(sel);
-            				}
-            				
-            				if (element == null)
-            					page.c8o.log.debug(''[ProductTour] ''+ ''Element not found: ''+ sel);
-            				
-            				return element;
-            			}
-            
-            			/**
-            			 * This function will triiget a next step after a delay.
-            			 */
-            			let delayedNext = () => {
-            				let tour = window["__ProductTour"];
-            				if (tour)
-            					 if (tour["exited"] == true) return;
-            				
-            				setTimeout(() => {
-            							window["__ProductTour"].nextStep();
-            				}, 1000);
-            			}
-            
-            			/**
-            			 * This function will attach an event to the element to trigger the next step
-            			 */			
-            			let attachEventForNext = (element, evt) => {
-            				page.c8o.log.debug(''[ProductTour]  attachEventForNext : ''+ element + '' - ''+ evt);
-            				events.push({evt:evt, delayedNext: delayedNext, element: element});
-            				element.addEventListener(evt, delayedNext);
-            			}
-            
-            			let router = page.getInstance(Router) as Router;
-            			
-            			
-            			/**
-            			 * Runs the product tour on the given url with the given data
-            			 * This function is called each time the page changes to run the tour on the new page
-            			 * Display the steps configured for this page rul.
-            			 * 
-            			 * @param url the url of the page to run the tour on
-            			 * @param data the data containing the steps for the wholetour
-            			 */
-            			let RunTour = (url, data) => {
-            				
-            				// We have to keep only one instance of the tour object
-            				let tour = window["__ProductTour"];
-            				if (tour == null) {
-            					tour = introJs()
-            					window["__ProductTour"] = tour;
-            				}
-            
-            				// Tour has been exited, so do not launch it again
-            				if (!vars.force_start && tour["exited"] == true) {
-            				    page.c8o.log.debug(''[ProductTour]  Tour has been exited'');
-            					return;	
-            				} 
-            				
-            				let options = {
-            					steps: []
-            				}
-            				
-            				Object.keys(data).forEach((key) => {
-            					if (key !== ''steps'') {
-            						options[key] = data[key];
-            					}
-            					
-            				});
-            				if(vars.hide_dontshowagain == true){
-            					options["dontShowAgain"] = false;
-            					delete options["dontShowAgainLabel"]
-            				}
-            				// format the steps for introJs by adding the element to the selector
-            				setTimeout(() => {
-            					data.steps.forEach((step) => {
-            						if (step.class != null &&  step.class != "") {
-            							step.element = querySelectorAdv(step.class);
-            							
-            							// Attach a click event to the element to trigger the next step
-            							if (step.element != null && step.autoNext) {
-            								let evt = step.autoNext === true ? ''click'' : step.autoNext;
-            								attachEventForNext(step.element, evt);
-            							}
-            						}
-            //						if(step.title != null){
-            //							if(typeof step.title != "string"){
-            //								step.title = step.title[page["translate"].currentLang ?? "en"];
-            //							}
-            //						}
-            //						if(step.intro != null){
-            //							if(typeof step.intro != "string"){
-            //								step.intro = step.intro[page["translate"].currentLang ?? "en"];
-            //							}
-            //						}
-            						options.steps.push(step);
-            					});
-            
-            					// find the first step number of the given url
-            					let stepNumber = 0;
-            					for (let i = 0; i < options.steps.length; i++) {
-            						if (url.startsWith(options.steps[i].url)) {
-            							stepNumber = i;
-            							break;
-            						}
-            					}
-            					
-            					
-            					tour.setOptions(options)
-            					tour.start()
-            					tour.goToStep(stepNumber+1);
-            					
-            					// hide the next button if hideNext is set to true, do the same for hidePrevious
-            					tour.onchange((targetElement) => {
-            						if (tour["exited"] == true) return;
-            						
-            						if (targetElement != null) {
-            							let step = tour._introItems[tour._currentStep];
-            							try{
-            								page.c8o.log.debug(''[ProductTour]  on Step : ''+ JSON.stringify(step));
-            							}
-            							catch(e){
-            								page.c8o.log.debug(''[ProductTour]  on Step : ''+ step.title);
-            							}
-            							try{
-            								if (step.hideNext) 
-            									document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''none'';
-            								else 
-            									document.querySelector(''.introjs-nextbutton'')["style"]["display"] = ''inline'';
-            							}
-            							catch(e){
-            								// silent catch
-            								//console.error("could''nt hideNext", e);	
-            							}
-            							try{
-            								if (step.hidePrevious) 
-            									document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''none'';
-            								else 
-            									document.querySelector(''.introjs-prevbutton'')["style"]["display"] = ''inline'';
-            							}
-            							catch(e){
-            								// silent catch
-            								//console.error("could''nt hidePrevious", e);
-            							}
-            						}
-            					})
-            					
-            					
-            					// DOM elements may have appeared after the tour has started, check this before each step and 
-            					// update the step element if necessary
-            					tour.onbeforechange((targetElement) => {
-            						if (tour["exited"] == true) return;
-            						
-            						let step = tour._introItems[tour._currentStep];
-            						let elt = querySelectorAdv(step?.class);
-            						if (elt) {
-            							step.element = elt
-            							step.position = ''right''
-            							
-            							if (step.element != null && step.autoNext) {
-            								let evt = step.autoNext === true ? ''click'' : step.autoNext;
-            								attachEventForNext(step.element, evt);
-            							}
-            
-            						}
-            						try{
-            							page.c8o.log.debug(''[ProductTour]  onbeforechange : ''+ JSON.stringify(step));
-            						}
-            						catch(e){
-            							page.c8o.log.debug(''[ProductTour]  onbeforechange : ''+ step.title);
-            						}
-            						
-            					})
-            
-            					tour.onexit(() => {
-            						page.c8o.log.debug(''[ProductTour]  Exiting Tour'');
-            						for(let item of events){
-            							item.element.removeEventListener(item.evt, item.delayedNext)
-            						}
-            						tour["exited"] = true;
-            					})
-            
-            										
-            					resolve();
-            				}, 1000);
-            			}
-            
-            			// we have now the steps, we can start the tour
-            			let data = vars.data;
-            			RunTour(router.url, data); // run the tour on the root page
-            			
-            			if(vars.restart_on_page_changed){
-            				// install a listner to run the tour each time the page changes
-            				router.events
-            					.pipe(filter(event => event instanceof NavigationEnd))
-            					.subscribe((event: NavigationEnd) => {
-            						page.c8o.log.debug(''[ProductTour] ''+ ''Navigated to page: ''+ event.url);
-            						RunTour(event.url, data); // run the tour each time the page changes
-            					});
-            			}
-            			
-            '
-    app_ts_imports: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-        - com.twinsoft.convertigo.beans.common.XMLVector: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: '{Router, NavigationEnd}'
-              - java.lang.String: 
-                - ↑value: '@angular/router'
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: '{filter}'
-              - java.lang.String: 
-                - ↑value: rxjs/operators
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: '* as introJs'
-              - java.lang.String: 
-                - ↑value: intro.js/intro.js
-    build_scripts: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-        - com.twinsoft.convertigo.beans.common.XMLVector: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: node_modules/intro.js/intro.js
-    build_styles: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-        - com.twinsoft.convertigo.beans.common.XMLVector: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: node_modules/intro.js/introjs.css
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: ../../DisplayObjects/mobile/assets/introjs-custom.css
-    package_dependencies: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-        - com.twinsoft.convertigo.beans.common.XMLVector: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: intro.js
-              - java.lang.String: 
-                - ↑value: 7.2.0
-    ↓data [ngx.components.UIControlVariable-1730471874570]: 
-      varValue: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-          - MobileSmartSourceType: source:{"filter":"Sequence","project":"lib_ProductTour","input":"","model":{"data":[{"sequence":"lib_ProductTour.TranslateTour","marker":""}],"path":"","prefix":"","suffix":"","custom":"","useCustom":false}}
-    ↓force_start [ngx.components.UIControlVariable-1745490716838]: 
-      varValue: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-          - MobileSmartSourceType: script:params.force_start
-    ↓hide_dontshowagain [ngx.components.UIControlVariable-1745585591134]: 
-      varValue: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-          - MobileSmartSourceType: script:params.hide_dontshowagain
-    ↓restart_on_page_changed [ngx.components.UIControlVariable-1745587349891]: 
-      varValue: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
-          - MobileSmartSourceType: script:params.restart_on_page_changed
+    Path of the tours file of the application: a relative path to a JSON file of its assets.
+  value: '''assets/tours/tours.json'''
+↓tour_id [ngx.components.UIStackVariable-1793290000002]: 
+  comment: |
+    Id of the tour to start, "@current" for the tour of the current screen, empty to only set up the engine.
+  value: ''''''
 ↓force_start [ngx.components.UIStackVariable-1745490704399]: 
+  comment: |
+    true starts the tour even if the user has already completed or skipped it; false starts it only once.
   value: false
+↓conditions [ngx.components.UIStackVariable-1793290000003]: 
+  comment: |
+    Object of the conditions the "when" of tours and steps name: booleans or functions returning a boolean.
+    Only the first non-null value is kept.
+  value: null
+↓user_key [ngx.components.UIStackVariable-1793290000004]: 
+  comment: |
+    Key of the user the completed tours are remembered for (string or function); by default the name of the session user.
+  value: null
 ↓hide_dontshowagain [ngx.components.UIStackVariable-1745585543588]: 
+  comment: |
+    Not used since 8.4.0.7 (kept for the applications that still set it).
   value: false
 ↓restart_on_page_changed [ngx.components.UIStackVariable-1745587318325]: 
+  comment: |
+    Not used since 8.4.0.7: the engine always follows the router (kept for the applications that still set it).
   value: true
+↓InstallTour [ngx.components.UICustomAction-1729613778235]: 
+  actionValue: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.FormatedContent
+      - com.twinsoft.convertigo.beans.common.FormatedContent: 
+        →: |
+          'page.c8o.log.debug(''[MB] '' + props.actionFunction + '': '' + props.actionName);
+          const win: any = window as any;
+          
+          // <tour-core>
+          // Pure helpers of the product tour (no DOM): tests/tour-core.test.cjs runs them under Node.
+          const tourCore: any = {
+          	DEFAULT_LABELS: {
+          		next: ''Next'',
+          		previous: ''Back'',
+          		done: ''Done'',
+          		skip: ''Skip tour'',
+          		close: ''Close'',
+          		progress: ''Step {{current}} of {{total}}'',
+          		steps: ''{{total}} steps'',
+          		skipStep: ''Skip this step'',
+          		quit: ''Quit tour'',
+          		waiting: ''The tour goes on as soon as you have done it.'',
+          		paused: ''The tour is paused: it goes on when you come back to its screen.'',
+          		pending: ''This tour starts on another screen.''
+          	},
+          	// A tours file is a JSON file of the application: a relative path, no scheme, no host, no "..".
+          	safePath(path: any): boolean {
+          		return typeof path == ''string''
+          			&& /^(?![a-z][a-z0-9+.-]*:)(?!\/\/)[A-Za-z0-9_./-]+\.json$/i.test(path)
+          			&& path.indexOf(''..'') < 0;
+          	},
+          	// A route pattern is a regular expression (or a list of them) tested on the router URL; none matches every URL.
+          	matches(pattern: any, url: any): boolean {
+          		if (pattern == null || pattern === '''') {
+          			return true;
+          		}
+          		const list: any[] = Array.isArray(pattern) ? pattern : [pattern];
+          		return list.some((p: any) => {
+          			try {
+          				return new RegExp(p).test(url || '''');
+          			} catch (e) {
+          				return false;
+          			}
+          		});
+          	},
+          	// "when" names conditions given by the application; "!name" negates one; all must hold.
+          	allowed(item: any, conditions: any): boolean {
+          		const names: any[] = item && item.when ? (Array.isArray(item.when) ? item.when : [item.when]) : [];
+          		return names.every((name: any) => {
+          			const not = String(name).charAt(0) == ''!'';
+          			const key = not ? String(name).substring(1) : String(name);
+          			let value: any = conditions ? conditions[key] : undefined;
+          			if (typeof value == ''function'') {
+          				try {
+          					value = value();
+          				} catch (e) {
+          					value = false;
+          				}
+          			}
+          			return not ? !value : !!value;
+          		});
+          	},
+          	// The steps counted in "Step n of N": the allowed ones, without the branch steps (reached only by "goTo")
+          	// and the steps marked "count": false (a step that is usually passed at once).
+          	counted(tour: any, conditions: any): any[] {
+          		return (tour.steps || []).filter((step: any) => !step.branch && step.count !== false && tourCore.allowed(step, conditions));
+          	},
+          	// "skipped": ids of the steps the tour has passed or will pass because their element is absent.
+          	progress(tour: any, index: number, conditions: any, skipped?: any[]): any {
+          		const counted = tourCore.counted(tour, conditions).filter((step: any) => !(skipped || []).includes(step.id) || step === tour.steps[index]);
+          		let position = -1;
+          		for (let i = index; i >= 0 && position < 0; i--) {
+          			position = counted.indexOf(tour.steps[i]);
+          		}
+          		return { current: Math.max(position, 0) + 1, total: Math.max(counted.length, 1) };
+          	},
+          	// Next (direction 1) or previous (-1) step a user walks to: allowed and not a branch step; -1 when there is none.
+          	nextIndex(tour: any, from: number, direction: number, conditions: any): number {
+          		const steps: any[] = tour.steps || [];
+          		for (let i = from + direction; i >= 0 && i < steps.length; i += direction) {
+          			if (!steps[i].branch && tourCore.allowed(steps[i], conditions)) {
+          				return i;
+          			}
+          		}
+          		return -1;
+          	},
+          	indexOf(tour: any, id: any): number {
+          		return (tour.steps || []).findIndex((step: any) => step.id == id);
+          	},
+          	find(defs: any, id: any): any {
+          		return ((defs && defs.tours) || []).find((tour: any) => tour.id == id) || null;
+          	},
+          	// The tour of a screen: the first allowed tour whose "routes" match the URL.
+          	tourFor(defs: any, url: any, conditions: any): any {
+          		return ((defs && defs.tours) || []).find((tour: any) => tourCore.allowed(tour, conditions) && tour.routes && tourCore.matches(tour.routes, url)) || null;
+          	},
+          	// "@current": the tour of the screen, or the tour marked "default" when the screen has none.
+          	currentTour(defs: any, url: any, conditions: any): any {
+          		return tourCore.tourFor(defs, url, conditions)
+          			|| ((defs && defs.tours) || []).find((tour: any) => tour.default && tourCore.allowed(tour, conditions))
+          			|| null;
+          	},
+          	// A step of another screen pauses the tour, unless the step (or its tour) says "offRoute": "skip".
+          	skipsOffRoute(tour: any, step: any): boolean {
+          		return (step.offRoute || tour.offRoute) == ''skip'';
+          	},
+          	readState(storage: any, key: string): any {
+          		try {
+          			const value = JSON.parse((storage && storage.getItem(key)) || ''{}'');
+          			return value && typeof value == ''object'' && !Array.isArray(value) ? value : {};
+          		} catch (e) {
+          			return {};
+          		}
+          	},
+          	writeState(storage: any, key: string, state: any): void {
+          		try {
+          			storage.setItem(key, JSON.stringify(state));
+          		} catch (e) {
+          			// private mode or full storage: the tour only forgets
+          		}
+          	},
+          	// A tour is "seen" once completed or skipped; a newer "version" of the tour makes it new again.
+          	seen(state: any, tour: any): any {
+          		const entry = state && state.done ? state.done[tour.id] : null;
+          		return entry && (entry.v || 1) >= (tour.version || 1) ? entry : null;
+          	},
+          	mark(state: any, tour: any, how: string): any {
+          		state.done = state.done || {};
+          		state.done[tour.id] = { v: tour.version || 1, how: how, at: Date.now() };
+          		return state;
+          	},
+          	forget(state: any, tourId: any): any {
+          		if (!tourId) {
+          			state.done = {};
+          		} else if (state.done) {
+          			delete state.done[tourId];
+          		}
+          		return state;
+          	},
+          	// A text is an i18n key or a plain text: the translation when the key exists, the value itself otherwise.
+          	text(value: any, translate: any, params?: any): string {
+          		if (value == null) {
+          			return '''';
+          		}
+          		const key = String(value);
+          		let out = key;
+          		if (translate) {
+          			try {
+          				const translated = translate(key, params);
+          				if (translated != null && translated !== '''' && translated !== key) {
+          					out = String(translated);
+          				}
+          			} catch (e) {
+          				// keep the key
+          			}
+          		}
+          		return tourCore.format(out, params || {});
+          	},
+          	label(defs: any, name: string, translate: any, params?: any): string {
+          		const key = defs && defs.labels ? defs.labels[name] : null;
+          		const text = key ? tourCore.text(key, translate, params) : '''';
+          		return text && text !== key ? text : tourCore.format(tourCore.DEFAULT_LABELS[name] || name, params || {});
+          	},
+          	format(template: any, values: any): string {
+          		return String(template).replace(/\{\{\s*(\w+)\s*\}\}/g, (match: string, key: string) => values[key] != null ? String(values[key]) : match);
+          	},
+          	// Texts are shown as text: HTML is escaped, line breaks are kept.
+          	escape(text: any): string {
+          		return String(text)
+          			.replace(/&/g, ''&amp;'')
+          			.replace(/</g, ''&lt;'')
+          			.replace(/>/g, ''&gt;'')
+          			.replace(/"/g, ''&quot;'')
+          			.replace(/''/g, ''&#39;'')
+          			.replace(/\n/g, ''<br>'');
+          	},
+          	anchorSelector(anchor: any): string {
+          		const names: any[] = Array.isArray(anchor) ? anchor : [anchor];
+          		return names.filter((name: any) => /^[A-Za-z0-9_-]+$/.test(String(name)))
+          			.map((name: any) => ''[data-tour~="'' + name + ''"]'').join('', '');
+          	}
+          };
+          // </tour-core>
+          
+          const STYLE = `
+          .driver-overlay { z-index: 39990 !important; }
+          /* no fade-in: Firefox may never show the end of the opacity animation of driver.js while its window keeps the
+             focus, which left the overlay and the popover invisible on a page whose clicks the tour already blocks */
+          .driver-fade .driver-overlay, .driver-fade .driver-popover { animation: none !important; }
+          .driver-popover.c8o-tour {
+          	--c8o-tour-primary: #326DF7;
+          	font-family: var(--c8o-tour-font, Inter, "IBM Plex Sans", system-ui, sans-serif);
+          	background: #fff; color: #0F172A; border: 1px solid #D5DCE8; border-radius: 12px;
+          	box-shadow: 0 12px 32px rgba(15, 23, 42, .18); box-sizing: border-box;
+          	padding: 16px 18px 14px; width: min(360px, calc(100vw - 24px)); min-width: 0;
+          	max-width: min(360px, calc(100vw - 24px)); max-height: calc(100vh - 24px); overflow: auto;
+          }
+          .c8o-tour .driver-popover-title { font-size: 16px; font-weight: 600; line-height: 1.35; margin: 0 28px 6px 0; color: #0F172A; }
+          .c8o-tour .driver-popover-description { font-size: 14px; line-height: 1.55; color: #334155; }
+          .c8o-tour .driver-popover-footer { display: none !important; }
+          .c8o-tour .driver-popover-close-btn { color: #64748B; width: 32px; height: 32px; top: 6px; right: 6px; font-size: 20px; line-height: 32px; border-radius: 8px; }
+          .c8o-tour .driver-popover-close-btn:hover { color: #0F172A; background: #F1F5F9; }
+          .c8o-tour-progress { height: 4px; background: #E6EDFE; border-radius: 4px; margin: 0 32px 10px 0; overflow: hidden; }
+          .c8o-tour-progress > span { display: block; height: 100%; background: var(--c8o-tour-primary); border-radius: 4px; transition: width .3s ease; }
+          .c8o-tour-meta { font-size: 12px; color: #64748B; margin: 0 32px 4px 0; }
+          .c8o-tour-wait { display: flex; gap: 8px; font-size: 13px; line-height: 1.45; color: #1E4FD8; background: #EEF3FF; border-radius: 8px; padding: 8px 10px; margin: 12px 0 0; }
+          .c8o-tour-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+          .c8o-tour-nav { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+          .c8o-tour-links { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+          .c8o-tour-btn { all: unset; box-sizing: border-box; cursor: pointer; font: 500 13px/1.2 var(--c8o-tour-font, Inter, "IBM Plex Sans", system-ui, sans-serif); padding: 8px 14px; border-radius: 8px; border: 1px solid #D5DCE8; color: #334155; background: #fff; text-align: center; }
+          .c8o-tour-btn:hover { background: #F5F7FB; }
+          .c8o-tour-btn--primary { background: var(--c8o-tour-primary, #326DF7); border-color: var(--c8o-tour-primary, #326DF7); color: #fff; }
+          .c8o-tour-btn--primary:hover { background: #2459D8; }
+          .c8o-tour-link { all: unset; cursor: pointer; font: 400 13px/1.2 var(--c8o-tour-font, Inter, "IBM Plex Sans", system-ui, sans-serif); color: #64748B; padding: 6px 2px; }
+          .c8o-tour-link:hover { color: #0F172A; text-decoration: underline; }
+          .c8o-tour-btn:focus-visible, .c8o-tour-link:focus-visible, .c8o-tour .driver-popover-close-btn:focus-visible { outline: 2px solid var(--c8o-tour-primary, #326DF7); outline-offset: 2px; }
+          .c8o-tour-hint { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 1000000000; display: flex; align-items: center; gap: 12px; box-sizing: border-box; max-width: calc(100vw - 24px); background: #0F172A; color: #fff; border-radius: 12px; padding: 10px 12px 10px 16px; font: 400 13px/1.45 var(--c8o-tour-font, Inter, "IBM Plex Sans", system-ui, sans-serif); box-shadow: 0 8px 24px rgba(15, 23, 42, .25); }
+          .c8o-tour-hint .c8o-tour-link { color: #CBD5E1; white-space: nowrap; }
+          .c8o-tour-hint .c8o-tour-link:hover { color: #fff; }
+          @media (max-width: 767px) {
+          	.driver-popover.c8o-tour { position: fixed !important; left: 8px !important; right: 8px !important; top: auto !important; bottom: 8px !important; width: auto !important; max-width: none !important; max-height: 55vh; }
+          	.c8o-tour .driver-popover-arrow { display: none !important; }
+          	.c8o-tour-hint { left: 8px; right: 8px; bottom: 8px; transform: none; flex-wrap: wrap; }
+          }
+          @media (max-height: 620px) {
+          	.driver-popover.c8o-tour { padding: 12px 14px 10px; }
+          	.c8o-tour .driver-popover-description { font-size: 13px; line-height: 1.5; }
+          	.c8o-tour-footer { margin-top: 10px; }
+          }
+          @media (prefers-reduced-motion: reduce) {
+          	.c8o-tour-progress > span { transition: none; }
+          }
+          `;
+          
+          const router: any = page.getInstance(Router);
+          let ctl: any = win.__C8oProductTour;
+          
+          if (!ctl) {
+          	ctl = win.__C8oProductTour = {
+          		core: tourCore,
+          		defs: null,
+          		path: '''',
+          		loading: null,
+          		conditions: {},
+          		translate: null,
+          		userKey: null,
+          		run: null,
+          		pending: null,
+          		driverObj: null,
+          		token: 0,
+          		hint: null,
+          		cleanups: [],
+          		listeners: [],
+          		internalDestroy: false,
+          		routeChangedAt: 0,
+          		cache: null,
+          		cacheKey: '''',
+          
+          		log(message: string): void {
+          			try {
+          				page.c8o.log.debug(''[ProductTour] '' + message);
+          			} catch (e) {
+          				// no logger
+          			}
+          		},
+          		url(): string {
+          			return router.url || '''';
+          		},
+          		tr(value: any, params?: any): string {
+          			return tourCore.text(value, ctl.translate, params);
+          		},
+          		label(name: string, params?: any): string {
+          			return tourCore.label(ctl.defs, name, ctl.translate, params);
+          		},
+          		storageKey(): string {
+          			let user: any = '''';
+          			try {
+          				user = typeof ctl.userKey == ''function'' ? ctl.userKey() : ctl.userKey;
+          			} catch (e) {
+          				user = '''';
+          			}
+          			return ''c8o.productTour:'' + (user || ''anonymous'');
+          		},
+          		state(): any {
+          			const key = ctl.storageKey();
+          			if (!ctl.cache || ctl.cacheKey != key) {
+          				ctl.cache = tourCore.readState(window.localStorage, key);
+          				ctl.cacheKey = key;
+          			}
+          			return ctl.cache;
+          		},
+          		save(state: any): void {
+          			ctl.cache = state;
+          			ctl.cacheKey = ctl.storageKey();
+          			tourCore.writeState(window.localStorage, ctl.cacheKey, state);
+          			ctl.notify();
+          		},
+          		subscribe(listener: any): any {
+          			ctl.listeners.push(listener);
+          			return () => {
+          				ctl.listeners = ctl.listeners.filter((l: any) => l !== listener);
+          			};
+          		},
+          		notify(): void {
+          			ctl.listeners.forEach((listener: any) => {
+          				try {
+          					listener();
+          				} catch (e) {
+          					// a listener of the application failed
+          				}
+          			});
+          		},
+          		load(path: string): Promise<any> {
+          			if (ctl.defs && ctl.path == path) {
+          				return Promise.resolve(ctl.defs);
+          			}
+          			if (ctl.loading && ctl.path == path) {
+          				return ctl.loading;
+          			}
+          			if (!tourCore.safePath(path)) {
+          				ctl.log(''refused tours path: '' + path);
+          				return Promise.resolve(null);
+          			}
+          			ctl.path = path;
+          			ctl.loading = fetch(path, { credentials: ''same-origin'', cache: ''no-cache'' })
+          				.then((response: any) => response.ok ? response.json() : null)
+          				.then((defs: any) => {
+          					ctl.defs = defs && Array.isArray(defs.tours) ? defs : null;
+          					ctl.loading = null;
+          					ctl.notify();
+          					return ctl.defs;
+          				})
+          				.catch((e: any) => {
+          					ctl.log(''cannot load '' + path + '': '' + e);
+          					ctl.loading = null;
+          					return null;
+          				});
+          			return ctl.loading;
+          		},
+          
+          		// What the help menu of the application shows.
+          		list(): any[] {
+          			const url = ctl.url();
+          			const state = ctl.state();
+          			return ((ctl.defs && ctl.defs.tours) || [])
+          				.filter((tour: any) => tourCore.allowed(tour, ctl.conditions))
+          				.map((tour: any) => {
+          					const seen = tourCore.seen(state, tour);
+          					return {
+          						id: tour.id,
+          						title: ctl.tr(tour.title),
+          						description: ctl.tr(tour.description),
+          						completed: !!seen && seen.how == ''completed'',
+          						seen: !!seen,
+          						here: !!tour.routes && tourCore.matches(tour.routes, url),
+          						active: !!ctl.run && ctl.run.tour.id == tour.id
+          					};
+          				});
+          		},
+          		tourFor(url?: string): any {
+          			return tourCore.tourFor(ctl.defs, url == null ? ctl.url() : url, ctl.conditions);
+          		},
+          		// A tour of this screen the user has never completed nor skipped.
+          		hasNew(url?: string): boolean {
+          			const tour = ctl.tourFor(url);
+          			return !!tour && !tourCore.seen(ctl.state(), tour);
+          		},
+          		isSeen(id: string): boolean {
+          			const tour = tourCore.find(ctl.defs, id);
+          			return !!tour && !!tourCore.seen(ctl.state(), tour);
+          		},
+          		isActive(): boolean {
+          			return !!ctl.run || !!ctl.pending;
+          		},
+          		reset(id?: string): void {
+          			ctl.save(tourCore.forget(ctl.state(), id));
+          		},
+          
+          		// Starts a tour: an id, or "@current" for the tour of the screen. "auto" starts only a tour never seen.
+          		start(id: string, options?: any): boolean {
+          			const opts = options || {};
+          			if (!ctl.defs) {
+          				return false;
+          			}
+          			const tour = id == ''@current'' || !id ? tourCore.currentTour(ctl.defs, ctl.url(), ctl.conditions) : tourCore.find(ctl.defs, id);
+          			if (!tour || !tourCore.allowed(tour, ctl.conditions)) {
+          				return false;
+          			}
+          			if (opts.auto && tourCore.seen(ctl.state(), tour)) {
+          				return false;
+          			}
+          			if (opts.auto && ctl.isActive()) {
+          				return false;
+          			}
+          			ctl.stop(null);
+          			const first = ctl.firstIndex(tour);
+          			if (first < 0) {
+          				return false;
+          			}
+          			const step = tour.steps[first];
+          			if (!tourCore.matches(step.route, ctl.url())) {
+          				ctl.pending = { id: tour.id, auto: !!opts.auto };
+          				if (!opts.auto) {
+          					ctl.showHint(ctl.tr(tour.startHint) || ctl.label(''pending''), false);
+          				}
+          				ctl.notify();
+          				return true;
+          			}
+          			ctl.run = { tour: tour, index: first, entered: Date.now(), afterRoute: false, skipped: [] };
+          			ctl.remember();
+          			ctl.notify();
+          			ctl.show();
+          			return true;
+          		},
+          		// how: "completed", "skipped", or null to stop without remembering anything.
+          		stop(how: any): void {
+          			const run = ctl.run;
+          			ctl.run = null;
+          			ctl.pending = null;
+          			ctl.token++;
+          			ctl.clear();
+          			ctl.hideHint();
+          			ctl.destroyDriver();
+          			try {
+          				window.sessionStorage.removeItem(''c8o.productTour.run'');
+          			} catch (e) {
+          				// no session storage
+          			}
+          			if (run && how) {
+          				ctl.save(tourCore.mark(ctl.state(), run.tour, how));
+          				ctl.log(''tour '' + run.tour.id + '' '' + how);
+          			} else {
+          				ctl.notify();
+          			}
+          		},
+          		// The first step of a tour; in a tour that skips the steps of other screens, the first one of this screen.
+          		firstIndex(tour: any): number {
+          			let index = tourCore.nextIndex(tour, -1, 1, ctl.conditions);
+          			while (index >= 0 && tourCore.skipsOffRoute(tour, tour.steps[index]) && !tourCore.matches(tour.steps[index].route, ctl.url())) {
+          				index = tourCore.nextIndex(tour, index, 1, ctl.conditions);
+          			}
+          			return index >= 0 ? index : tourCore.nextIndex(tour, -1, 1, ctl.conditions);
+          		},
+          		remember(): void {
+          			try {
+          				const step = ctl.run.tour.steps[ctl.run.index];
+          				window.sessionStorage.setItem(''c8o.productTour.run'', JSON.stringify({ id: ctl.run.tour.id, step: step.id }));
+          			} catch (e) {
+          				// no session storage
+          			}
+          		},
+          		// After a reload, the tour goes on at the step it was showing.
+          		resume(): void {
+          			let saved: any = null;
+          			try {
+          				saved = JSON.parse(window.sessionStorage.getItem(''c8o.productTour.run'') || ''null'');
+          			} catch (e) {
+          				saved = null;
+          			}
+          			const tour = saved ? tourCore.find(ctl.defs, saved.id) : null;
+          			const index = tour ? tourCore.indexOf(tour, saved.step) : -1;
+          			if (tour && index >= 0 && !ctl.run) {
+          				ctl.run = { tour: tour, index: index, entered: Date.now(), afterRoute: true, skipped: [] };
+          				ctl.show();
+          			}
+          		},
+          		next(): void {
+          			if (!ctl.run) {
+          				return;
+          			}
+          			const run = ctl.run;
+          			const index = tourCore.nextIndex(run.tour, run.index, 1, ctl.conditions);
+          			// the last step shown ("Done"): the steps left after it are absent from this screen
+          			const step = run.tour.steps[run.index];
+          			const progress = tourCore.progress(run.tour, run.index, ctl.conditions, run.skipped.concat(ctl.absentAhead(run.tour, run.index)));
+          			const last = !step.branch && step.count !== false && !step.advanceOn && progress.current >= progress.total;
+          			if (index < 0 || last) {
+          				ctl.stop(''completed'');
+          			} else {
+          				ctl.go(index);
+          			}
+          		},
+          		previous(): void {
+          			if (!ctl.run) {
+          				return;
+          			}
+          			const index = tourCore.nextIndex(ctl.run.tour, ctl.run.index, -1, ctl.conditions);
+          			if (index >= 0 && tourCore.matches(ctl.run.tour.steps[index].route, ctl.url())) {
+          				ctl.go(index, -1);
+          			}
+          		},
+          		goTo(id: string): void {
+          			const index = ctl.run ? tourCore.indexOf(ctl.run.tour, id) : -1;
+          			if (index >= 0) {
+          				ctl.go(index);
+          			}
+          		},
+          		go(index: number, direction?: number): void {
+          			const routeBefore = ctl.run.tour.steps[ctl.run.index].route;
+          			ctl.run.index = index;
+          			ctl.run.direction = direction || 1;
+          			ctl.run.entered = Date.now();
+          			ctl.run.afterRoute = ctl.run.afterRoute || ctl.run.tour.steps[index].route != routeBefore;
+          			ctl.remember();
+          			ctl.show();
+          		},
+          
+          		// Router URL changes: a pending tour starts, a step waiting for a route goes on, a step of another screen pauses.
+          		onRoute(url: string): void {
+          			ctl.routeChangedAt = Date.now();
+          			if (ctl.pending) {
+          				const tour = tourCore.find(ctl.defs, ctl.pending.id);
+          				const first = tour ? ctl.firstIndex(tour) : -1;
+          				if (first >= 0 && tourCore.matches(tour.steps[first].route, url)) {
+          					const auto = ctl.pending.auto;
+          					ctl.pending = null;
+          					ctl.hideHint();
+          					if (!(auto && tourCore.seen(ctl.state(), tour))) {
+          						ctl.run = { tour: tour, index: first, entered: Date.now(), afterRoute: true, skipped: [] };
+          						ctl.remember();
+          						ctl.show();
+          					}
+          				}
+          				return;
+          			}
+          			if (!ctl.run) {
+          				return;
+          			}
+          			const step = ctl.run.tour.steps[ctl.run.index];
+          			if (step.advanceOn && step.advanceOn.route && tourCore.matches(step.advanceOn.route, url)) {
+          				ctl.run.afterRoute = true;
+          				ctl.next();
+          			} else if (!tourCore.matches(step.route, url)) {
+          				ctl.pause();
+          			} else if (ctl.run.paused) {
+          				ctl.run.paused = false;
+          				ctl.run.afterRoute = true;
+          				ctl.show();
+          			}
+          		},
+          		pause(): void {
+          			if (ctl.run && !ctl.run.paused) {
+          				const step = ctl.run.tour.steps[ctl.run.index];
+          				if (tourCore.skipsOffRoute(ctl.run.tour, step)) {
+          					ctl.show();
+          					return;
+          				}
+          				ctl.run.paused = true;
+          				ctl.token++;
+          				ctl.clear();
+          				ctl.destroyDriver();
+          				ctl.showHint(ctl.tr(ctl.run.tour.pauseHint) || ctl.label(''paused''), false);
+          			}
+          		},
+          
+          		visible(element: any): boolean {
+          			if (!element || !element.isConnected || element.closest(''.ion-page-hidden'')) {
+          				return false;
+          			}
+          			const rect = element.getBoundingClientRect();
+          			if (rect.width < 1 || rect.height < 1) {
+          				return false;
+          			}
+          			const style = window.getComputedStyle(element);
+          			return style.visibility != ''hidden'' && style.display != ''none'';
+          		},
+          		// The first visible element of the first anchor that has one: anchors are listed by preference.
+          		find(anchor: any): any {
+          			const names: any[] = Array.isArray(anchor) ? anchor : [anchor];
+          			for (const name of names) {
+          				const selector = tourCore.anchorSelector(name);
+          				const all: any[] = selector ? Array.prototype.slice.call(document.querySelectorAll(selector)) : [];
+          				const element = all.find((candidate: any) => ctl.visible(candidate));
+          				if (element) {
+          					return element;
+          				}
+          			}
+          			return null;
+          		},
+          		count(anchor: any): number {
+          			const selector = tourCore.anchorSelector(anchor);
+          			const all: any[] = selector ? Array.prototype.slice.call(document.querySelectorAll(selector)) : [];
+          			return all.filter((element: any) => ctl.visible(element)).length;
+          		},
+          		waitFor(anchor: any, timeout: number, token: number): Promise<any> {
+          			return new Promise((resolveWait: any) => {
+          				const started = Date.now();
+          				const look = () => {
+          					if (token != ctl.token) {
+          						resolveWait(null);
+          						return;
+          					}
+          					const element = ctl.find(anchor);
+          					if (element || Date.now() - started >= timeout) {
+          						resolveWait(element);
+          					} else {
+          						setTimeout(look, 150);
+          					}
+          				};
+          				look();
+          			});
+          		},
+          		clear(): void {
+          			ctl.cleanups.forEach((cleanup: any) => {
+          				try {
+          					cleanup();
+          				} catch (e) {
+          					// already gone
+          				}
+          			});
+          			ctl.cleanups = [];
+          		},
+          		destroyDriver(): void {
+          			if (ctl.driverObj) {
+          				ctl.internalDestroy = true;
+          				try {
+          					ctl.driverObj.destroy();
+          				} catch (e) {
+          					// already destroyed
+          				}
+          				ctl.internalDestroy = false;
+          				ctl.driverObj = null;
+          			}
+          		},
+          		// Is the condition of an action step already met (the user did it before the step showed)?
+          		done(advanceOn: any): boolean {
+          			if (!advanceOn) {
+          				return false;
+          			}
+          			if (advanceOn.route) {
+          				return tourCore.matches(advanceOn.route, ctl.url());
+          			}
+          			if (advanceOn.appear) {
+          				return !!ctl.find(advanceOn.appear);
+          			}
+          			return false;
+          		},
+          		// An action step waits for a route or an element; after the click on its target the overlay goes so that
+          		// the dialogs it opens can be used, and a hint at the bottom of the screen says the tour goes on.
+          		watch(step: any, token: number): void {
+          			const advanceOn = step.advanceOn;
+          			if (advanceOn.more) {
+          				const before = ctl.count(advanceOn.more);
+          				const timer = setInterval(() => {
+          					if (token != ctl.token) {
+          						clearInterval(timer);
+          					} else if (ctl.count(advanceOn.more) > before) {
+          						clearInterval(timer);
+          						ctl.next();
+          					}
+          				}, 250);
+          				ctl.cleanups.push(() => clearInterval(timer));
+          			}
+          			if (advanceOn.appear) {
+          				const timer = setInterval(() => {
+          					if (token != ctl.token) {
+          						clearInterval(timer);
+          					} else if (ctl.find(advanceOn.appear)) {
+          						clearInterval(timer);
+          						ctl.next();
+          					}
+          				}, 250);
+          				ctl.cleanups.push(() => clearInterval(timer));
+          			}
+          		},
+          		detach(step: any): void {
+          			ctl.destroyDriver();
+          			ctl.showHint(ctl.tr(step.waitText) || ctl.label(''waiting''), true);
+          		},
+          		showHint(text: string, withSkip: boolean): void {
+          			ctl.hideHint();
+          			const hint = document.createElement(''div'');
+          			hint.className = ''c8o-tour-hint'';
+          			hint.setAttribute(''role'', ''status'');
+          			const span = document.createElement(''span'');
+          			span.textContent = text;
+          			hint.appendChild(span);
+          			if (withSkip) {
+          				hint.appendChild(ctl.button(ctl.label(''skipStep''), ''link'', () => ctl.next()));
+          			}
+          			hint.appendChild(ctl.button(ctl.label(''quit''), ''link'', () => ctl.stop(ctl.run ? ''skipped'' : null)));
+          			document.body.appendChild(hint);
+          			ctl.hint = hint;
+          		},
+          		hideHint(): void {
+          			if (ctl.hint) {
+          				ctl.hint.remove();
+          				ctl.hint = null;
+          			}
+          		},
+          		button(text: string, kind: string, action: any): any {
+          			const button = document.createElement(''button'');
+          			button.type = ''button'';
+          			button.className = kind == ''link'' ? ''c8o-tour-link'' : ''c8o-tour-btn'' + (kind == ''primary'' ? '' c8o-tour-btn--primary'' : '''');
+          			button.textContent = text;
+          			button.addEventListener(''click'', (event: any) => {
+          				event.preventDefault();
+          				event.stopPropagation();
+          				action();
+          			});
+          			return button;
+          		},
+          		ensureDriver(): any {
+          			if (!ctl.driverObj) {
+          				ctl.driverObj = driver({
+          					animate: true,
+          					smoothScroll: true,
+          					allowClose: true,
+          					allowKeyboardControl: true,
+          					overlayClickBehavior: ''none'',
+          					overlayColor: ''#0F172A'',
+          					overlayOpacity: 0.55,
+          					stagePadding: 6,
+          					stageRadius: 10,
+          					popoverOffset: 10,
+          					showButtons: [''close''],
+          					showProgress: false,
+          					popoverClass: ''c8o-tour'',
+          					onNextClick: () => ctl.keyNext(),
+          					onPrevClick: () => ctl.previous(),
+          					onCloseClick: () => ctl.stop(''skipped''),
+          					onDestroyStarted: () => {
+          						if (!ctl.internalDestroy) {
+          							ctl.stop(''skipped'');
+          						}
+          					}
+          				});
+          			}
+          			return ctl.driverObj;
+          		},
+          		// The next steps of this screen whose element is absent: they will be skipped, so they are not counted.
+          		// The look stops at an action step, after which new elements may appear.
+          		absentAhead(tour: any, index: number): any[] {
+          			const absent: any[] = [];
+          			// a screen just opened may still be loading what the next steps show
+          			if (tour.steps[index].advanceOn || Date.now() - ctl.routeChangedAt < 5000) {
+          				return absent;
+          			}
+          			for (let i = tourCore.nextIndex(tour, index, 1, ctl.conditions); i >= 0; i = tourCore.nextIndex(tour, i, 1, ctl.conditions)) {
+          				const step = tour.steps[i];
+          				if (!tourCore.matches(step.route, ctl.url())) {
+          					if (tourCore.skipsOffRoute(tour, step)) {
+          						absent.push(step.id);
+          						continue;
+          					}
+          					break;
+          				}
+          				if (step.anchor && !ctl.find(step.anchor)) {
+          					absent.push(step.id);
+          				}
+          				if (step.advanceOn) {
+          					break;
+          				}
+          			}
+          			return absent;
+          		},
+          		// Arrow keys: an action step only goes on when the user does the action.
+          		keyNext(): void {
+          			const step = ctl.run ? ctl.run.tour.steps[ctl.run.index] : null;
+          			if (step && (!step.advanceOn || step.allowNext)) {
+          				ctl.next();
+          			}
+          		},
+          
+          		async show(): Promise<void> {
+          			if (!ctl.run) {
+          				return;
+          			}
+          			const token = ++ctl.token;
+          			ctl.clear();
+          			ctl.hideHint();
+          			const run = ctl.run;
+          			const tour = run.tour;
+          			const step = tour.steps[run.index];
+          			if (!tourCore.matches(step.route, ctl.url())) {
+          				if (tourCore.skipsOffRoute(tour, step)) {
+          					run.skipped.push(step.id);
+          					const index = tourCore.nextIndex(tour, run.index, run.direction || 1, ctl.conditions);
+          					if (index < 0) {
+          						ctl.stop((run.direction || 1) > 0 ? ''completed'' : null);
+          					} else {
+          						run.index = index;
+          						ctl.show();
+          					}
+          					return;
+          				}
+          				run.paused = true;
+          				ctl.destroyDriver();
+          				ctl.showHint(ctl.tr(tour.pauseHint) || ctl.label(''paused''), false);
+          				return;
+          			}
+          			run.paused = false;
+          			if (ctl.done(step.advanceOn)) {
+          				ctl.next();
+          				return;
+          			}
+          			let element: any = null;
+          			if (step.anchor) {
+          				const timeout = step.wait || (run.afterRoute ? 10000 : 3000);
+          				element = await ctl.waitFor(step.anchor, timeout, token);
+          				if (token != ctl.token) {
+          					return;
+          				}
+          				if (!element) {
+          					// never point at something absent: the step is skipped
+          					ctl.log(''skip step '' + step.id + '', no anchor '' + step.anchor);
+          					run.skipped.push(step.id);
+          					const index = tourCore.nextIndex(tour, run.index, run.direction || 1, ctl.conditions);
+          					if (index < 0) {
+          						if ((run.direction || 1) > 0) {
+          							ctl.stop(''completed'');
+          						} else {
+          							ctl.show();
+          						}
+          					} else {
+          						run.index = index;
+          						ctl.show();
+          					}
+          					return;
+          				}
+          			}
+          			run.afterRoute = false;
+          			ctl.render(step, element, token);
+          		},
+          		render(step: any, element: any, token: number): void {
+          			const run = ctl.run;
+          			const tour = run.tour;
+          			const progress = tourCore.progress(tour, run.index, ctl.conditions, run.skipped.concat(ctl.absentAhead(tour, run.index)));
+          			const previous = tourCore.nextIndex(tour, run.index, -1, ctl.conditions);
+          			const canGoBack = previous >= 0 && tourCore.matches(tour.steps[previous].route, ctl.url()) && !step.noBack;
+          			const isLast = progress.current >= progress.total;
+          			const action = step.advanceOn && !step.allowNext;
+          			const interactive = !!step.interactive || !!(step.advanceOn && step.advanceOn.click !== false && element);
+          			const d = ctl.ensureDriver();
+          			d.highlight({
+          				element: element || undefined,
+          				disableActiveInteraction: !interactive,
+          				popover: {
+          					title: tourCore.escape(ctl.tr(step.title)),
+          					description: tourCore.escape(ctl.tr(step.text)),
+          					side: step.side,
+          					align: step.align,
+          					showButtons: [''close''],
+          					onPopoverRender: (popover: any) => {
+          						const wrapper = popover.wrapper;
+          						wrapper.setAttribute(''role'', ''dialog'');
+          						wrapper.setAttribute(''aria-label'', ctl.tr(step.title));
+          						wrapper.setAttribute(''data-tour-step'', step.id);
+          						popover.closeButton.setAttribute(''aria-label'', ctl.label(''close''));
+          						const bar = document.createElement(''div'');
+          						bar.className = ''c8o-tour-progress'';
+          						const fill = document.createElement(''span'');
+          						fill.style.width = Math.round(progress.current * 100 / progress.total) + ''%'';
+          						bar.appendChild(fill);
+          						const meta = document.createElement(''div'');
+          						meta.className = ''c8o-tour-meta'';
+          						meta.textContent = step.intro
+          							? [ctl.tr(tour.title), ctl.label(''steps'', progress)].filter((part: any) => !!part).join('' · '')
+          							: ctl.label(''progress'', progress);
+          						wrapper.insertBefore(meta, wrapper.firstChild);
+          						if (!step.intro) {
+          							wrapper.insertBefore(bar, meta);
+          						}
+          						if (step.advanceOn) {
+          							const wait = document.createElement(''div'');
+          							wait.className = ''c8o-tour-wait'';
+          							wait.setAttribute(''role'', ''status'');
+          							wait.textContent = ctl.tr(step.waitText) || ctl.label(''waiting'');
+          							wrapper.appendChild(wait);
+          						}
+          						const footer = document.createElement(''div'');
+          						footer.className = ''c8o-tour-footer'';
+          						const skipTour = isLast ? null : ctl.button(step.skipLabel ? ctl.tr(step.skipLabel) : ctl.label(''skip''), ''link'', () => ctl.stop(''skipped''));
+          						if (skipTour && !action) {
+          							footer.appendChild(skipTour);
+          						}
+          						const nav = document.createElement(''div'');
+          						nav.className = ''c8o-tour-nav'';
+          						if (canGoBack && !step.intro) {
+          							nav.appendChild(ctl.button(ctl.label(''previous''), ''secondary'', () => ctl.previous()));
+          						}
+          						(step.alternatives || []).forEach((alternative: any) => {
+          							if (!alternative.anchor || ctl.find(alternative.anchor)) {
+          								nav.appendChild(ctl.button(ctl.tr(alternative.label), ''secondary'', () => ctl.goTo(alternative.goTo)));
+          							}
+          						});
+          						if (!action) {
+          							const label = step.nextLabel ? ctl.tr(step.nextLabel) : ctl.label(isLast ? ''done'' : ''next'');
+          							nav.appendChild(ctl.button(label, ''primary'', () => ctl.next()));
+          						}
+          						if (nav.childNodes.length) {
+          							footer.appendChild(nav);
+          						}
+          						if (footer.childNodes.length) {
+          							wrapper.appendChild(footer);
+          						}
+          						// an action step goes on by itself: skipping it or the tour are links under its buttons
+          						if (action) {
+          							const links = document.createElement(''div'');
+          							links.className = ''c8o-tour-links'';
+          							links.appendChild(ctl.button(ctl.label(''skipStep''), ''link'', () => ctl.next()));
+          							if (skipTour) {
+          								links.appendChild(skipTour);
+          							}
+          							wrapper.appendChild(links);
+          						}
+          						setTimeout(() => {
+          							const primary = wrapper.querySelector(''.c8o-tour-btn--primary'') || wrapper.querySelector(''.c8o-tour-btn'');
+          							if (primary && token == ctl.token) {
+          								primary.focus({ preventScroll: true });
+          							}
+          						}, 50);
+          					}
+          				}
+          			});
+          			if (step.advanceOn) {
+          				ctl.watch(step, token);
+          				if (element && step.advanceOn.click !== false) {
+          					const onClick = () => {
+          						if (token != ctl.token) {
+          							return;
+          						}
+          						if (step.advanceOn.route || step.advanceOn.appear || step.advanceOn.more) {
+          							setTimeout(() => {
+          								if (token == ctl.token) {
+          									ctl.detach(step);
+          								}
+          							}, 0);
+          						} else {
+          							setTimeout(() => ctl.next(), 300);
+          						}
+          					};
+          					element.addEventListener(''click'', onClick, true);
+          					ctl.cleanups.push(() => element.removeEventListener(''click'', onClick, true));
+          				}
+          			}
+          		}
+          	};
+          
+          	const style = document.createElement(''style'');
+          	style.id = ''c8o-product-tour-style'';
+          	style.textContent = STYLE;
+          	document.head.appendChild(style);
+          
+          	router.events
+          		.pipe(filter((event: any) => event instanceof NavigationEnd))
+          		.subscribe((event: any) => {
+          			ctl.log(''navigated to '' + event.urlAfterRedirects);
+          			ctl.onRoute(event.urlAfterRedirects || event.url);
+          		});
+          }
+          
+          ctl.conditions = vars.conditions || ctl.conditions || {};
+          ctl.translate = vars.translate || ctl.translate || ((key: string, params?: any) => {
+          	const service: any = page[''translate''];
+          	return service ? service.instant(key, params) : key;
+          });
+          if (vars.user_key != null && vars.user_key !== '''') {
+          	ctl.userKey = vars.user_key;
+          } else if (!ctl.userKey) {
+          	ctl.userKey = () => page.c8o && page.c8o.session && page.c8o.session.user ? page.c8o.session.user.name : '''';
+          }
+          
+          ctl.load(vars.tours || ''assets/tours/tours.json'').then((defs: any) => {
+          	if (defs) {
+          		if (!ctl.run && !ctl.pending) {
+          			ctl.resume();
+          		}
+          		if (vars.tour_id) {
+          			ctl.start(vars.tour_id, { auto: !vars.force_start });
+          		}
+          	}
+          	resolve(ctl);
+          });
+          '
+  app_ts_imports: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: '{Router, NavigationEnd}'
+            - java.lang.String: 
+              - ↑value: '@angular/router'
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: '{filter}'
+            - java.lang.String: 
+              - ↑value: rxjs/operators
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: '{driver}'
+            - java.lang.String: 
+              - ↑value: driver.js
+  build_styles: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: node_modules/driver.js/dist/driver.css
+  package_dependencies: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: driver.js
+            - java.lang.String: 
+              - ↑value: 1.9.0
+  ↓tours [ngx.components.UIControlVariable-1793290000011]: 
+    varValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: script:params.tours
+  ↓tour_id [ngx.components.UIControlVariable-1793290000012]: 
+    varValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: script:params.tour_id
+  ↓force_start [ngx.components.UIControlVariable-1745490716838]: 
+    varValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: script:params.force_start
+  ↓conditions [ngx.components.UIControlVariable-1793290000013]: 
+    varValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: script:params.conditions
+  ↓user_key [ngx.components.UIControlVariable-1793290000014]: 
+    varValue: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.ngx.components.MobileSmartSourceType
+        - MobileSmartSourceType: script:params.user_key
